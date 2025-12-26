@@ -1,3 +1,153 @@
+const OFFLINE_DB = [
+{title: "Squid Game", year: "2021", rating: "8.0", genre: "Drama, Thriller", poster: "data:image/svg+xml,%3Csvg
+xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300'%3E%3Cdefs%3E%3ClinearGradient id='g1' x1='0%25' y1='0%25'
+x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23ff6b6b;stop-opacity:1'/%3E%3Cstop offset='100%25'
+style='stop-color:%234ecdc4;stop-opacity:1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g1)' width='200'
+height='300'/%3E%3Ctext x='50%25' y='45%25' font-size='16' font-weight='bold' fill='white'
+text-anchor='middle'%3ESquid%3C/text%3E%3Ctext x='50%25' y='60%25' font-size='16' font-weight='bold' fill='white'
+text-anchor='middle'%3EGame%3C/text%3E%3C/svg%3E", status: "Watched"},
+{title: "All of Us Are Dead", year: "2022", rating: "7.6", genre: "Action, Drama, Horror", poster:
+"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300'%3E%3Cdefs%3E%3ClinearGradient
+id='g2'%3E%3Cstop offset='0%25' style='stop-color:%238e44ad;stop-opacity:1'/%3E%3Cstop offset='100%25'
+style='stop-color:%232c3e50;stop-opacity:1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g2)' width='200'
+height='300'/%3E%3Ctext x='50%25' y='50%25' font-size='14' font-weight='bold' fill='white' text-anchor='middle'%3EAll of
+Us%3C/text%3E%3Ctext x='50%25' y='65%25' font-size='14' font-weight='bold' fill='white' text-anchor='middle'%3EAre
+Dead%3C/text%3E%3C/svg%3E", status: "Watched"},
+{title: "Sweet Home", year: "2020", rating: "8.2", genre: "Action, Drama, Fantasy", poster: "data:image/svg+xml,%3Csvg
+xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300'%3E%3Cdefs%3E%3ClinearGradient id='g3'%3E%3Cstop offset='0%25'
+style='stop-color:%23e74c3c;stop-opacity:1'/%3E%3Cstop offset='100%25'
+style='stop-color:%235d4037;stop-opacity:1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g3)' width='200'
+height='300'/%3E%3Ctext x='50%25' y='50%25' font-size='14' font-weight='bold' fill='white'
+text-anchor='middle'%3ESweet%3C/text%3E%3Ctext x='50%25' y='65%25' font-size='14' font-weight='bold' fill='white'
+text-anchor='middle'%3EHome%3C/text%3E%3C/svg%3E", status: "Watched"},
+{title: "My Name", year: "2021", rating: "7.8", genre: "Action, Crime, Drama", poster: "data:image/svg+xml,%3Csvg
+xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300'%3E%3Cdefs%3E%3ClinearGradient id='g4'%3E%3Cstop offset='0%25'
+style='stop-color:%239b59b6;stop-opacity:1'/%3E%3Cstop offset='100%25'
+style='stop-color:%232980b9;stop-opacity:1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g4)' width='200'
+height='300'/%3E%3Ctext x='50%25' y='50%25' font-size='16' font-weight='bold' fill='white' text-anchor='middle'%3EMy
+Name%3C/text%3E%3C/svg%3E", status: "Watched"},
+{title: "The Glory", year: "2022", rating: "8.4", genre: "Drama, Thriller", poster: "data:image/svg+xml,%3Csvg
+xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300'%3E%3Cdefs%3E%3ClinearGradient id='g5'%3E%3Cstop offset='0%25'
+style='stop-color:%23f39c12;stop-opacity:1'/%3E%3Cstop offset='100%25'
+style='stop-color:%23c0392b;stop-opacity:1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g5)' width='200'
+height='300'/%3E%3Ctext x='50%25' y='50%25' font-size='14' font-weight='bold' fill='white' text-anchor='middle'%3EThe
+Glory%3C/text%3E%3C/svg%3E", status: "Watched"},
+{title: "Bloodhounds", year: "2023", rating: "7.3", genre: "Action, Crime, Drama", poster: "data:image/svg+xml,%3Csvg
+xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300'%3E%3Cdefs%3E%3ClinearGradient id='g6'%3E%3Cstop offset='0%25'
+style='stop-color:%23c0392b;stop-opacity:1'/%3E%3Cstop offset='100%25'
+style='stop-color:%23000;stop-opacity:1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g6)' width='200'
+height='300'/%3E%3Ctext x='50%25' y='50%25' font-size='13' font-weight='bold' fill='white'
+text-anchor='middle'%3EBloodhounds%3C/text%3E%3C/svg%3E", status: "Watched"},
+{title: "Hellbound", year: "2021", rating: "6.9", genre: "Drama, Fantasy, Horror", poster: "data:image/svg+xml,%3Csvg
+xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300'%3E%3Cdefs%3E%3ClinearGradient id='g7'%3E%3Cstop offset='0%25'
+style='stop-color:%232c3e50;stop-opacity:1'/%3E%3Cstop offset='100%25'
+style='stop-color:%238e44ad;stop-opacity:1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g7)' width='200'
+height='300'/%3E%3Ctext x='50%25' y='50%25' font-size='14' font-weight='bold' fill='white'
+text-anchor='middle'%3EHellbound%3C/text%3E%3C/svg%3E", status: "Watched"},
+{title: "Vincenzo", year: "2021", rating: "8.5", genre: "Comedy, Crime, Drama", poster: "data:image/svg+xml,%3Csvg
+xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300'%3E%3Cdefs%3E%3ClinearGradient id='g8'%3E%3Cstop offset='0%25'
+style='stop-color:%233498db;stop-opacity:1'/%3E%3Cstop offset='100%25'
+style='stop-color:%231abc9c;stop-opacity:1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g8)' width='200'
+height='300'/%3E%3Ctext x='50%25' y='50%25' font-size='14' font-weight='bold' fill='white'
+text-anchor='middle'%3EVincenzo%3C/text%3E%3C/svg%3E", status: "Watched"},
+{title: "Alice in Borderland", year: "2020", rating: "7.8", genre: "Action, Drama, Fantasy", poster:
+"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300'%3E%3Cdefs%3E%3ClinearGradient
+id='g9'%3E%3Cstop offset='0%25' style='stop-color:%2395a5a6;stop-opacity:1'/%3E%3Cstop offset='100%25'
+style='stop-color:%232c3e50;stop-opacity:1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g9)' width='200'
+height='300'/%3E%3Ctext x='50%25' y='40%25' font-size='12' font-weight='bold' fill='white' text-anchor='middle'%3EAlice
+in%3C/text%3E%3Ctext x='50%25' y='55%25' font-size='12' font-weight='bold' fill='white'
+text-anchor='middle'%3EBorderland%3C/text%3E%3C/svg%3E", status: "Watched"},
+{title: "Mirzapur", year: "2018", rating: "8.5", genre: "Action, Crime, Drama", poster: "data:image/svg+xml,%3Csvg
+xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300'%3E%3Cdefs%3E%3ClinearGradient id='g10'%3E%3Cstop offset='0%25'
+style='stop-color:%23d4af37;stop-opacity:1'/%3E%3Cstop offset='100%25'
+style='stop-color:%238b4513;stop-opacity:1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g10)' width='200'
+height='300'/%3E%3Ctext x='50%25' y='50%25' font-size='14' font-weight='bold' fill='white'
+text-anchor='middle'%3EMirzapur%3C/text%3E%3C/svg%3E", status: "Watched"},
+{title: "Farzi", year: "2023", rating: "8.2", genre: "Crime, Drama, Thriller", poster: "data:image/svg+xml,%3Csvg
+xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300'%3E%3Cdefs%3E%3ClinearGradient id='g11'%3E%3Cstop offset='0%25'
+style='stop-color:%2327ae60;stop-opacity:1'/%3E%3Cstop offset='100%25'
+style='stop-color:%23229954;stop-opacity:1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g11)' width='200'
+height='300'/%3E%3Ctext x='50%25' y='50%25' font-size='16' font-weight='bold' fill='white'
+text-anchor='middle'%3EFarzi%3C/text%3E%3C/svg%3E", status: "Watched"},
+{title: "The Family Man", year: "2019", rating: "8.8", genre: "Action, Crime, Drama", poster: "data:image/svg+xml,%3Csvg
+xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300'%3E%3Cdefs%3E%3ClinearGradient id='g12'%3E%3Cstop offset='0%25'
+style='stop-color:%232980b9;stop-opacity:1'/%3E%3Cstop offset='100%25'
+style='stop-color:%231a5276;stop-opacity:1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g12)' width='200'
+height='300'/%3E%3Ctext x='50%25' y='40%25' font-size='12' font-weight='bold' fill='white' text-anchor='middle'%3EThe
+Family%3C/text%3E%3Ctext x='50%25' y='55%25' font-size='12' font-weight='bold' fill='white'
+text-anchor='middle'%3EMan%3C/text%3E%3C/svg%3E", status: "Watched"},
+{title: "Scam 1992", year: "2020", rating: "9.2", genre: "Biography, Crime, Drama", poster: "data:image/svg+xml,%3Csvg
+xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300'%3E%3Cdefs%3E%3ClinearGradient id='g13'%3E%3Cstop offset='0%25'
+style='stop-color:%2334495e;stop-opacity:1'/%3E%3Cstop offset='100%25'
+style='stop-color:%232c3e50;stop-opacity:1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g13)' width='200'
+height='300'/%3E%3Ctext x='50%25' y='45%25' font-size='18' font-weight='bold' fill='%23f39c12'
+text-anchor='middle'%3E1992%3C/text%3E%3Ctext x='50%25' y='60%25' font-size='12' font-weight='bold' fill='white'
+text-anchor='middle'%3EScam%3C/text%3E%3C/svg%3E", status: "Watched"},
+{title: "Money Heist", year: "2017", rating: "8.3", genre: "Crime, Drama, Thriller", poster: "data:image/svg+xml,%3Csvg
+xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300'%3E%3Cdefs%3E%3ClinearGradient id='g14'%3E%3Cstop offset='0%25'
+style='stop-color:%23c0392b;stop-opacity:1'/%3E%3Cstop offset='100%25'
+style='stop-color:%23922b21;stop-opacity:1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g14)' width='200'
+height='300'/%3E%3Ctext x='50%25' y='40%25' font-size='12' font-weight='bold' fill='white'
+text-anchor='middle'%3EMoney%3C/text%3E%3Ctext x='50%25' y='55%25' font-size='12' font-weight='bold' fill='white'
+text-anchor='middle'%3EHeist%3C/text%3E%3C/svg%3E", status: "Watched"},
+{title: "The Boys", year: "2019", rating: "8.7", genre: "Action, Comedy, Crime", poster: "data:image/svg+xml,%3Csvg
+xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300'%3E%3Cdefs%3E%3ClinearGradient id='g15'%3E%3Cstop offset='0%25'
+style='stop-color:%23f39c12;stop-opacity:1'/%3E%3Cstop offset='100%25'
+style='stop-color:%23e67e22;stop-opacity:1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g15)' width='200'
+height='300'/%3E%3Ctext x='50%25' y='50%25' font-size='16' font-weight='bold' fill='white' text-anchor='middle'%3EThe
+Boys%3C/text%3E%3C/svg%3E", status: "Watched"},
+{title: "Wednesday", year: "2022", rating: "8.1", genre: "Comedy, Crime, Fantasy", poster: "data:image/svg+xml,%3Csvg
+xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300'%3E%3Cdefs%3E%3ClinearGradient id='g16'%3E%3Cstop offset='0%25'
+style='stop-color:%231a1a1a;stop-opacity:1'/%3E%3Cstop offset='100%25'
+style='stop-color:%23333;stop-opacity:1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g16)' width='200'
+height='300'/%3E%3Ctext x='50%25' y='50%25' font-size='14' font-weight='bold' fill='%23fff'
+text-anchor='middle'%3EWednesday%3C/text%3E%3C/svg%3E", status: "Plan to Watch"},
+{title: "The Witcher", year: "2019", rating: "8.0", genre: "Action, Adventure, Drama", poster:
+"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300'%3E%3Cdefs%3E%3ClinearGradient
+id='g17'%3E%3Cstop offset='0%25' style='stop-color:%238b0000;stop-opacity:1'/%3E%3Cstop offset='100%25'
+style='stop-color:%23000;stop-opacity:1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g17)' width='200'
+height='300'/%3E%3Ctext x='50%25' y='50%25' font-size='13' font-weight='bold' fill='%23ffd700'
+text-anchor='middle'%3EThe Witcher%3C/text%3E%3C/svg%3E", status: "Watched"},
+{title: "Peaky Blinders", year: "2013", rating: "8.8", genre: "Crime, Drama", poster: "data:image/svg+xml,%3Csvg
+xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300'%3E%3Cdefs%3E%3ClinearGradient id='g18'%3E%3Cstop offset='0%25'
+style='stop-color:%231a1a1a;stop-opacity:1'/%3E%3Cstop offset='100%25'
+style='stop-color:%23444;stop-opacity:1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g18)' width='200'
+height='300'/%3E%3Ctext x='50%25' y='40%25' font-size='12' font-weight='bold' fill='%23ff6b6b'
+text-anchor='middle'%3EPeaky%3C/text%3E%3Ctext x='50%25' y='55%25' font-size='12' font-weight='bold' fill='%23ff6b6b'
+text-anchor='middle'%3EBlinders%3C/text%3E%3C/svg%3E", status: "Watched"},
+{title: "Lupin", year: "2021", rating: "8.1", genre: "Action, Adventure, Crime", poster: "data:image/svg+xml,%3Csvg
+xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300'%3E%3Cdefs%3E%3ClinearGradient id='g19'%3E%3Cstop offset='0%25'
+style='stop-color:%234a148c;stop-opacity:1'/%3E%3Cstop offset='100%25'
+style='stop-color:%232a0845;stop-opacity:1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g19)' width='200'
+height='300'/%3E%3Ctext x='50%25' y='50%25' font-size='16' font-weight='bold' fill='%23ff6b6b'
+text-anchor='middle'%3ELupin%3C/text%3E%3C/svg%3E", status: "Watched"},
+{title: "Lucifer", year: "2015", rating: "8.1", genre: "Crime, Drama, Fantasy", poster: "data:image/svg+xml,%3Csvg
+xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300'%3E%3Cdefs%3E%3ClinearGradient id='g20'%3E%3Cstop offset='0%25'
+style='stop-color:%23d4a574;stop-opacity:1'/%3E%3Cstop offset='100%25'
+style='stop-color:%23664d33;stop-opacity:1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g20)' width='200'
+height='300'/%3E%3Ctext x='50%25' y='50%25' font-size='14' font-weight='bold' fill='%23fff'
+text-anchor='middle'%3ELucifer%3C/text%3E%3C/svg%3E", status: "Watched"},
+{title: "The Last of Us", year: "2023", rating: "8.3", genre: "Action, Adventure, Drama", poster:
+"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300'%3E%3Cdefs%3E%3ClinearGradient
+id='g21'%3E%3Cstop offset='0%25' style='stop-color:%23556b2f;stop-opacity:1'/%3E%3Cstop offset='100%25'
+style='stop-color:%23000;stop-opacity:1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g21)' width='200'
+height='300'/%3E%3Ctext x='50%25' y='40%25' font-size='12' font-weight='bold' fill='%23ffd700'
+text-anchor='middle'%3EThe Last%3C/text%3E%3Ctext x='50%25' y='55%25' font-size='12' font-weight='bold' fill='%23ffd700'
+text-anchor='middle'%3Eof Us%3C/text%3E%3C/svg%3E", status: "Plan to Watch"},
+{title: "Game of Thrones", year: "2011", rating: "9.2", genre: "Action, Adventure, Drama", poster:
+"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300'%3E%3Cdefs%3E%3ClinearGradient
+id='g22'%3E%3Cstop offset='0%25' style='stop-color:%23000;stop-opacity:1'/%3E%3Cstop offset='100%25'
+style='stop-color:%23333;stop-opacity:1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g22)' width='200'
+height='300'/%3E%3Ctext x='50%25' y='40%25' font-size='12' font-weight='bold' fill='%23ffd700'
+text-anchor='middle'%3EGame of%3C/text%3E%3Ctext x='50%25' y='55%25' font-size='12' font-weight='bold' fill='%23ffd700'
+text-anchor='middle'%3EThrones%3C/text%3E%3C/svg%3E", status: "Watched"},
+{title: "Sex Education", year: "2019", rating: "8.0", genre: "Comedy, Drama", poster: "data:image/svg+xml,%3Csvg
+xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300'%3E%3Cdefs%3E%3ClinearGradient id='g23'%3E%3Cstop offset='0%25'
+style='stop-color:%231b5e20;stop-opacity:1'/%3E%3Cstop offset='100%25'
+style='stop-color:%23003d00;stop-opacity:1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g23)' width='200'
+height='300'/%3E%3Ctext x='50%25' y='40%25' font-size='12' font-weight='bold' fill='%23fff'
+text-anchor='middle'%3ESex%3C/text%3E%3Ctext x='50%25' y='55%25' font-size='12' font-weight='bold' fill='%23fff'
+text-anchor='middle
 <!DOCTYPE html>
 <html lang="en">
 
