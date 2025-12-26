@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineTrack - Your Series Universe</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            border-bottom: 2px solid #3b82f6;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stats {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #3b82f6;
+        }
+
+        .stat-label {
+            color: #94a3b8;
+            font-size: 0.8rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .hero-section {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .hero-section h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .add-section {
+            background: linear-gradient(135deg, #1e293b, #334155);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid #475569;
+        }
+
+        .input-group {
+            display: grid;
+            grid-template-columns: 1fr 150px 120px;
+            gap: 1rem;
+        }
+
+        input,
+        select {
+            padding: 0.9rem;
+            border: 1.5px solid #475569;
+            border-radius: 8px;
+            background: #0f172a;
+            color: #e2e8f0;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn {
+            padding: 0.9rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+        }
+
+        .filter-section {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .chip {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            border: 1.5px solid #475569;
+            background: transparent;
+            color: #cbd5e1;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .chip:hover,
+        .chip.active {
+            background: #3b82f6;
+            border-color: #3b82f6;
+            color: white;
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .view-btn {
+            padding: 0.5rem 1rem;
+            border: 1.5px solid #475569;
+            border-radius: 6px;
+            background: transparent;
+            color: #cbd5e1;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .view-btn.active {
+            background: #3b82f6;
+            border-color: #3b82f6;
+            color: white;
+        }
+
+        .series-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .series-card {
+            background: linear-gradient(135deg, #1e293b, #334155);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #475569;
+            transition: all 0.3s;
+            animation: fadeIn 0.4s;
+        }
+
+        .series-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(59, 130, 246, 0.3);
+            border-color: #3b82f6;
+        }
+
+        .poster-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 150%;
+            background: #0f172a;
+            overflow: hidden;
+        }
+
+        .poster {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .status-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .badge-watched {
+            background: #10b981;
+            color: white;
+        }
+
+        .badge-rewatch {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .badge-plan {
+            background: #ef4444;
+            color: white;
+        }
+
+        .card-content {
+            padding: 1.2rem;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.8rem;
+            font-size: 0.85rem;
+        }
+
+        .card-year {
+            color: #94a3b8;
+        }
+
+        .card-rating {
+            color: #f59e0b;
+            font-weight: 600;
+        }
+
+        .card-genre {
+            font-size: 0.8rem;
+            color: #64748b;
+            margin-bottom: 0.8rem;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .card-btn {
+            flex: 1;
+            padding: 0.6rem;
+            border: none;
+            border-radius: 6px;
+            background: #334155;
+            color: #e2e8f0;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .card-btn:hover {
+            background: #475569;
+        }
+
+        .card-btn.delete {
+            background: #7f1d1d;
+        }
+
+        .card-btn.delete:hover {
+            background: #991b1b;
+        }
+
+        .table-view {
+            display: none;
+        }
+
+        .table-view.active {
+            display: block;
+        }
+
+        .series-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: linear-gradient(135deg, #1e293b, #334155);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .series-table thead {
+            background: #0f172a;
+            border-bottom: 2px solid #3b82f6;
+        }
+
+        .series-table th,
+        .series-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #475569;
+        }
+
+        .series-table tbody tr:hover {
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .poster-small {
+            width: 50px;
+            height: 75px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #64748b;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .input-group {
+                grid-template-columns: 1fr;
+            }
+
+            .series-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="logo">🎬 CineTrack</div>
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-number" id="totalCount">0</div>
+                    <div class="stat-label">Total</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="watchedCount">0</div>
+                    <div class="stat-label">Watched</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="planCount">0</div>
+                    <div class="stat-label">Plan</div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="hero-section">
+            <h1>🎭 Your Personal Series Universe</h1>
+            <p>Track and organize your favorite TV series</p>
+        </div>
+
+        <div class="add-section">
+            <h3>➕ Add New Series</h3>
+            <div class="input-group">
+                <input id="titleInput" type="text" placeholder="Enter series name (Breaking Bad, Squid Game, etc.)">
+                <select id="statusInput">
+                    <option>Watched</option>
+                    <option>Rewatch</option>
+                    <option>Plan to Watch</option>
+                </select>
+                <button class="btn" onclick="addSeries()">Add</button>
+            </div>
+        </div>
+
+        <div class="filter-section">
+            <span style="color: #94a3b8;">Filter:</span>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                <button class="chip active" onclick="filterByStatus('all')">All</button>
+                <button class="chip" onclick="filterByStatus('Watched')">✓ Watched</button>
+                <button class="chip" onclick="filterByStatus('Rewatch')">⟲ Rewatch</button>
+                <button class="chip" onclick="filterByStatus('Plan to Watch')">📋 Plan</button>
+            </div>
+            <select id="sortInput" onchange="render()"
+                style="margin-left: auto; padding: 0.5rem; border-radius: 6px; background: #0f172a; border: 1.5px solid #475569; color: #e2e8f0;">
+                <option value="date-desc">Recently Added</option>
+                <option value="rating-desc">Highest Rated</option>
+                <option value="title-asc">Title (A-Z)</option>
+            </select>
+            <div class="view-toggle">
+                <button class="view-btn active" onclick="switchView('grid')">🔲 Grid</button>
+                <button class="view-btn" onclick="switchView('table')">≡ Table</button>
+            </div>
+        </div>
+
+        <div class="grid-view active">
+            <div class="series-grid" id="seriesGrid"></div>
+        </div>
+
+        <div class="table-view">
+            <table class="series-table">
+                <thead>
+                    <tr>
+                        <th>Poster</th>
+                        <th>Title</th>
+                        <th>Year</th>
+                        <th>Rating</th>
+                        <th>Genre</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="seriesTable"></tbody>
+            </table>
+        </div>
+
+        <div id="emptyState" class="empty-state" style="display: none;">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">🎭</div>
+            <h3 style="color: #cbd5e1;">No series found</h3>
+            <p>Add your first series to get started!</p>
+        </div>
+    </div>
+
+    <script>
+        const API_KEY = "93acdead";
+        const STORAGE_KEY = "cinetrack_db";
+        const OFFLINE_DB = [
+            { title: "Squid Game", year: "2021", rating: "8.0", genre: "Drama, Thriller", poster: "https://m.media-amazon.com/images/M/MV5BYWE3YWRiY2EtYsbkMC00YjM1LWJkYzItMmFiMzNlNTU4NzlmXkEyXkFqcGdeQXVyMDg2NTEzMw@@._V1_SX300.jpg", status: "Watched" },
+            { title: "All of Us Are Dead", year: "2022", rating: "7.6", genre: "Action, Drama, Horror", poster: "https://m.media-amazon.com/images/M/MV5BYzljMTczMTItOGY3NS00ZWEwLWFhZTItYzk0NDI3ZTJjMTEyXkEyXkFqcGdeQXVyMTEzMTI5Nzk@._V1_SX300.jpg", status: "Watched" },
+            { title: "Sweet Home", year: "2020", rating: "8.2", genre: "Action, Drama, Fantasy", poster: "https://m.media-amazon.com/images/M/MV5BOWY1OWI3NTItYzE0OS00YmZiLWI5YzAtMzA4N2ZlZDg3OTQ0XkEyXkFqcGdeQXVyMjQwMDg0Ng@@._V1_SX300.jpg", status: "Watched" },
+            { title: "My Name", year: "2021", rating: "7.8", genre: "Action, Crime, Drama", poster: "https://m.media-amazon.com/images/M/MV5BOTlhYTk0YTEtYzlmOC00N2NlLWJiMjItYzNmZTUxNTZiMjA1XkEyXkFqcGdeQXVyMjQwMDg0Ng@@._V1_SX300.jpg", status: "Watched" },
+            { title: "The Glory", year: "2022", rating: "8.4", genre: "Drama, Thriller", poster: "https://m.media-amazon.com/images/M/MV5BN2I4N2ZmNTYtYjMyOS00MjNjLWJjNjMtNGJkYmYwYWU5YzIxXkEyXkFqcGdeQXVyMjQwMDg0Ng@@._V1_SX300.jpg", status: "Watched" },
+            { title: "Bloodhounds", year: "2023", rating: "7.3", genre: "Action, Crime, Drama", poster: "https://m.media-amazon.com/images/M/MV5BNTg5YjkzYi00OTcxLWIwODYtOTg0OWQyYzVlMDkxXkEyXkFqcGdeQXVyMjQwMDg0Ng@@._V1_SX300.jpg", status: "Watched" },
+            { title: "Hellbound", year: "2021", rating: "6.9", genre: "Drama, Fantasy, Horror", poster: "https://m.media-amazon.com/images/M/MV5BYzA5YjBjYzUtN2ZiOS00ZmNlLTk0OTAtMDY1N2U0MGEwZGE2XkEyXkFqcGdeQXVyMjQwMDg0Ng@@._V1_SX300.jpg", status: "Watched" },
+            { title: "Vincenzo", year: "2021", rating: "8.5", genre: "Comedy, Crime, Drama", poster: "https://m.media-amazon.com/images/M/MV5BODcyYjk0ZWItODkyOC00ZDczLWI0MzItMjkxZTM3OGIyZGU3XkEyXkFqcGdeQXVyMjQwMDg0Ng@@._V1_SX300.jpg", status: "Watched" },
+            { title: "Alice in Borderland", year: "2020", rating: "7.8", genre: "Action, Drama, Fantasy", poster: "https://m.media-amazon.com/images/M/MV5BZjczZTMxNDUtYTVhYi00MDI0LWI1ZmItYmZkYjdhY2I4OTdiXkEyXkFqcGdeQXVyMjQwMDg0Ng@@._V1_SX300.jpg", status: "Watched" },
+            { title: "Mirzapur", year: "2018", rating: "8.5", genre: "Action, Crime, Drama", poster: "https://m.media-amazon.com/images/M/MV5BYjQ4ZDYwNTYtMDc4OC00NTgyLWI5YTItN2JmMDhlYjM3NzMyXkEyXkFqcGdeQXVyMjQwMDg0Ng@@._V1_SX300.jpg", status: "Watched" },
+            { title: "Farzi", year: "2023", rating: "8.2", genre: "Crime, Drama, Thriller", poster: "https://m.media-amazon.com/images/M/MV5BNGZkZTU4ZjMtMzc0Yi00ZmMwLWFhMTItMmI4YmZkMjczZTY0XkEyXkFqcGdeQXVyMjQwMDg0Ng@@._V1_SX300.jpg", status: "Watched" },
+            { title: "The Family Man", year: "2019", rating: "8.8", genre: "Action, Crime, Drama", poster: "https://m.media-amazon.com/images/M/MV5BYjcyNTAxMzItZjFmYi00MDhjLWJjMTktYzliYWQwYzU5ZjczXkEyXkFqcGdeQXVyMjQwMDg0Ng@@._V1_SX300.jpg", status: "Watched" },
+            { title: "Scam 1992", year: "2020", rating: "9.2", genre: "Biography, Crime, Drama", poster: "https://m.media-amazon.com/images/M/MV5BYTJmYWY1NDItZDQwYi00ZjAxLTkxY2QtYmEwMDc1YjAxMWEwXkEyXkFqcGdeQXVyMjQwMDg0Ng@@._V1_SX300.jpg", status: "Watched" },
+            { title: "Money Heist", year: "2017", rating: "8.3", genre: "Crime, Drama, Thriller", poster: "https://m.media-amazon.com/images/M/MV5BOWVkODExZGYtNWI3Ni00ZDc1LTkwNGItYTM1MjAwNTcwMDEyXkEyXkFqcGdeQXVyNjAxNzA0OQ@@._V1_SX300.jpg", status: "Watched" },
+            { title: "The Boys", year: "2019", rating: "8.7", genre: "Action, Comedy, Crime", poster: "https://m.media-amazon.com/images/M/MV5BMTg0MjYwNjctOTgzMS00NzQ4LTkwYjYtOTgzY2FjZDkwMTVnXkEyXkFqcGdeQXVyMzQ2MDk5NjU@._V1_SX300.jpg", status: "Watched" },
+            { title: "Wednesday", year: "2022", rating: "8.1", genre: "Comedy, Crime, Fantasy", poster: "https://m.media-amazon.com/images/M/MV5BYjA2Yzg0NzEtNDY0MC00NzAwLWE1MWYtNWM4NTBjMDcyYjk1XkEyXkFqcGdeQXVyMTEzMTI5Nzk@._V1_SX300.jpg", status: "Plan to Watch" },
+            { title: "The Witcher", year: "2019", rating: "8.0", genre: "Action, Adventure, Drama", poster: "https://m.media-amazon.com/images/M/MV5BMjE0MzYyODctNDIwMS00ZGUzLWI4YTctNTM4MzQ0OTc4YjI2XkEyXkFqcGdeQXVyMjQwMDg0Ng@@._V1_SX300.jpg", status: "Watched" },
+            { title: "Peaky Blinders", year: "2013", rating: "8.8", genre: "Crime, Drama", poster: "https://m.media-amazon.com/images/M/MV5BMzAxNTQxMTItNGQxNC00YzExLWIyYWItZDg4ZmZhMjc3OTBhXkEyXkFqcGdeQXVyMzQ2MDk5NjU@._V1_SX300.jpg", status: "Watched" },
+            { title: "Lupin", year: "2021", rating: "8.1", genre: "Action, Adventure, Crime", poster: "https://m.media-amazon.com/images/M/MV5BOWQyZTBjZGUtYjkxYS00YWNlLTk1NTItZmJkYjI0YTlmN2Y4XkEyXkFqcGdeQXVyMjQwMDg0Ng@@._V1_SX300.jpg", status: "Watched" },
+            { title: "Lucifer", year: "2015", rating: "8.1", genre: "Crime, Drama, Fantasy", poster: "https://m.media-amazon.com/images/M/MV5BODkyZWFkODctODhkMS00YWFmLWJjYmItZDY5YzJhNDhjNTg0XkEyXkFqcGdeQXVyMjQwMDg0Ng@@._V1_SX300.jpg", status: "Watched" },
+            { title: "The Last of Us", year: "2023", rating: "8.3", genre: "Action, Adventure, Drama", poster: "https://m.media-amazon.com/images/M/MV5BNzA1ZWQzNTAtMWY2YS00NWE5LTkxYWMtNjZhMTk2OTg2OThhXkEyXkFqcGdeQXVyMDg2NTEzMw@@._V1_SX300.jpg", status: "Plan to Watch" },
+            { title: "Game of Thrones", year: "2011", rating: "9.2", genre: "Action, Adventure, Drama", poster: "https://m.media-amazon.com/images/M/MV5BN2IzYzBiOTgtNWYzLTRmODktOWM0N2ZhZjdjNmM4XkEyXkFqcGdeQXVyNjc1NzM4NzQ@._V1_SX300.jpg", status: "Watched" },
+            { title: "Sex Education", year: "2019", rating: "8.0", genre: "Comedy, Drama", poster: "https://m.media-amazon.com/images/M/MV5BYzAxMTk3ZTAtODExNy00OGUyLWI1NzItZjAyZDkxMTMzZGJiXkEyXkFqcGdeQXVyMjQwMDg0Ng@@._V1_SX300.jpg", status: "Watched" },
+            { title: "One Piece", year: "1999", rating: "8.9", genre: "Action, Adventure, Animation", poster: "https://m.media-amazon.com/images/M/MV5BODcwNWE3OTMtMDc3NS00YjlmLWIwNmEtNDg5NWE5MzhhZGQ5XkEyXkFqcGdeQXVyNzA4ODM3NzE@._V1_SX300.jpg", status: "Rewatch" },
+            { title: "Death Note", year: "2006", rating: "9.0", genre: "Animation, Crime, Drama", poster: "https://m.media-amazon.com/images/M/MV5BODcwNWE3OTMtMDc3NS00YjlmLWIwNmEtNDg5NWE5MzhhZGQ1XkEyXkFqcGdeQXVyNzA4ODM3NzE@._V1_SX300.jpg", status: "Watched" },
+            { title: "Jujutsu Kaisen", year: "2020", rating: "8.5", genre: "Action, Animation, Adventure", poster: "https://m.media-amazon.com/images/M/MV5BODcwNWE3OTMtMDc3NS00YjlmLWIwNmEtNDg5NWE5MzhhZGQ2XkEyXkFqcGdeQXVyNzA4ODM3NzE@._V1_SX300.jpg", status: "Rewatch" },
+            { title: "Solo Leveling", year: "2024", rating: "8.6", genre: "Action, Animation, Adventure", poster: "https://m.media-amazon.com/images/M/MV5BMzAxNTQxMTItNGQxNC00YzExLWIyYWItZDg0ZWE5MzhhZGQ3XkEyXkFqcGdeQXVyMzQ2MDk5NjU@._V1_SX300.jpg", status: "Watched" },
+            { title: "Breaking Bad", year: "2008", rating: "9.5", genre: "Crime, Drama, Thriller", poster: "https://m.media-amazon.com/images/M/MV5BMjQ0OTAwODUxN15BMl5BanBnXkFtZWcwNzM0NzM3NjE@._V1_SX300.jpg", status: "Watched" },
+            { title: "Stranger Things", year: "2016", rating: "8.7", genre: "Drama, Fantasy, Horror", poster: "https://m.media-amazon.com/images/M/MV5BMzAxNDU3NDItOTI1OS00ZWMwLWE4OTEtNDgyZTcwYTQ5MjUxXkEyXkFqcGdeQXVyMTEzMTI5Nzk@._V1_SX300.jpg", status: "Watched" },
+            { title: "The Crown", year: "2016", rating: "8.6", genre: "Biography, Drama, History", poster: "https://m.media-amazon.com/images/M/MV5BMzAxNTEwZTItODgyNC00YzExLWJjZWUtYzY3ZTQ0YjJkMmQ1XkEyXkFqcGdeQXVyMjQwMDg0Ng@@._V1_SX300.jpg", status: "Watched" }
+        ];
+
+        let db = [];
+        let currentFilter = 'all';
+
+        async function fetchIMDb(title) {
+            try {
+                const res = await fetch(`https://www.omdbapi.com/?t=${encodeURIComponent(title)}&type=series&apikey=${API_KEY}`);
+                const data = await res.json();
+                if (data.Response === "False") return null;
+                return {
+                    id: Date.now() + Math.random(),
+                    title: data.Title || title,
+                    year: data.Year || "N/A",
+                    rating: data.imdbRating || "N/A",
+                    genre: data.Genre || "N/A",
+                    poster: data.Poster !== "N/A" ? data.Poster : null,
+                    imdbID: data.imdbID || "",
+                    status: "Watched",
+                    addedDate: new Date().toISOString()
+                };
+            } catch (e) {
+                console.error('Fetch error:', e);
+                return null;
+            }
+        }
+
+        function getSortedDB() {
+            let filtered = currentFilter === 'all' ? db : db.filter(s => s.status === currentFilter);
+            const sort = document.getElementById('sortInput')?.value || 'date-desc';
+            filtered.sort((a, b) => {
+                if (sort === 'rating-desc') return (parseFloat(b.rating) || 0) - (parseFloat(a.rating) || 0);
+                if (sort === 'title-asc') return a.title.localeCompare(b.title);
+                return new Date(b.addedDate) - new Date(a.addedDate);
+            });
+            return filtered;
+        }
+
+        function updateStats() {
+            document.getElementById('totalCount').textContent = db.length;
+            document.getElementById('watchedCount').textContent = db.filter(s => s.status === 'Watched').length;
+            document.getElementById('planCount').textContent = db.filter(s => s.status === 'Plan to Watch').length;
+        }
+
+        function getStatusClass(status) {
+            return status === 'Watched' ? 'badge-watched' : status === 'Rewatch' ? 'badge-rewatch' : 'badge-plan';
+        }
+
+        function render() {
+            const sorted = getSortedDB();
+            if (sorted.length === 0) {
+                document.getElementById('emptyState').style.display = 'block';
+                document.getElementById('seriesGrid').innerHTML = '';
+                document.getElementById('seriesTable').innerHTML = '';
+                return;
+            }
+            document.getElementById('emptyState').style.display = 'none';
+
+            document.getElementById('seriesGrid').innerHTML = sorted.map(s => `
+                <div class="series-card">
+                    <div class="poster-container">
+                        ${s.poster ? `<img src="${s.poster}" alt="${s.title}" class="poster" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 300%22%3E%3Crect fill=%22%23334155%22 width=%22200%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-size=%2218%22 fill=%22%2394a3b8%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22%3ENo Poster%3C/text%3E%3C/svg%3E'">` : '<div style="width:100%; height:100%; background:#334155; display:flex; align-items:center; justify-content:center;">No Poster</div>'}
+                        <span class="status-badge ${getStatusClass(s.status)}">${s.status.substring(0, 3)}</span>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-title">${s.title}</div>
+                        <div class="card-meta">
+                            <span class="card-year">${s.year}</span>
+                            <span class="card-rating">⭐ ${s.rating}</span>
+                        </div>
+                        <div class="card-genre">${s.genre}</div>
+                        <div class="card-actions">
+                            <button class="card-btn" onclick="changeStatus('${s.id}')">Change</button>
+                            <button class="card-btn delete" onclick="removeSeries('${s.id}')">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            document.getElementById('seriesTable').innerHTML = sorted.map(s => `
+                <tr>
+                    <td>${s.poster ? `<img src="${s.poster}" class="poster-small">` : 'N/A'}</td>
+                    <td><strong>${s.title}</strong></td>
+                    <td>${s.year}</td>
+                    <td>${s.rating}</td>
+                    <td>${s.genre}</td>
+                    <td><span class="status-badge ${getStatusClass(s.status)}">${s.status}</span></td>
+                    <td><button class="card-btn" onclick="changeStatus('${s.id}')" style="width: 70px; margin-right: 0.5rem;">Change</button><button class="card-btn delete" onclick="removeSeries('${s.id}')" style="width: 70px;">Delete</button></td>
+                </tr>
+            `).join('');
+
+            updateStats();
+        }
+
+        function filterByStatus(status) {
+            currentFilter = status;
+            document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+            event.target.classList.add('active');
+            render();
+        }
+
+        function switchView(view) {
+            document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            document.querySelector('.grid-view').classList.toggle('active', view === 'grid');
+            document.querySelector('.table-view').classList.toggle('active', view === 'table');
+        }
+
+        function changeStatus(id) {
+            const item = db.find(s => s.id == id);
+            if (!item) return;
+            const statuses = ['Watched', 'Rewatch', 'Plan to Watch'];
+            const current = statuses.indexOf(item.status);
+            item.status = statuses[(current + 1) % 3];
+            save();
+            render();
+        }
+
+        function removeSeries(id) {
+            if (confirm('Delete this series?')) {
+                db = db.filter(s => s.id != id);
+                save();
+                render();
+            }
+        }
+
+        async function addSeries() {
+            const title = document.getElementById('titleInput').value.trim();
+            if (!title) return alert('Enter series name');
+            const status = document.getElementById('statusInput').value;
+            const item = await fetchIMDb(title);
+            if (!item) return alert('Series not found');
+            item.status = status;
+            db.unshift(item);
+            save();
+            render();
+            document.getElementById('titleInput').value = '';
+        }
+
+        function save() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(db));
+        }
+
+        async function init() {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            if (stored) {
+                db = JSON.parse(stored);
+                render();
+            } else {
+                console.log('Loading offline series database...');
+                for (const item of OFFLINE_DB) {
+                    db.push({
+                        id: Date.now() + Math.random(),
+                        title: item.title,
+                        year: item.year,
+                        rating: item.rating,
+                        genre: item.genre,
+                        poster: item.poster,
+                        imdbID: "",
+                        status: item.status,
+                        addedDate: new Date().toISOString()
+                    });
+                    await new Promise(r => setTimeout(r, 50));
+                }
+                save();
+                render();
+            }
+        }
+
+        init();
+    </script>
+</body>
+
+</html>
