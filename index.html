@@ -1,161 +1,44 @@
-const OFFLINE_DB = [
-{title: "Squid Game", year: "2021", rating: "8.0", genre: "Drama, Thriller", poster: "data:image/svg+xml,%3Csvg
-xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300'%3E%3Cdefs%3E%3ClinearGradient id='g1' x1='0%25' y1='0%25'
-x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23ff6b6b;stop-opacity:1'/%3E%3Cstop offset='100%25'
-style='stop-color:%234ecdc4;stop-opacity:1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g1)' width='200'
-height='300'/%3E%3Ctext x='50%25' y='45%25' font-size='16' font-weight='bold' fill='white'
-text-anchor='middle'%3ESquid%3C/text%3E%3Ctext x='50%25' y='60%25' font-size='16' font-weight='bold' fill='white'
-text-anchor='middle'%3EGame%3C/text%3E%3C/svg%3E", status: "Watched"},
-{title: "All of Us Are Dead", year: "2022", rating: "7.6", genre: "Action, Drama, Horror", poster:
-"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300'%3E%3Cdefs%3E%3ClinearGradient
-id='g2'%3E%3Cstop offset='0%25' style='stop-color:%238e44ad;stop-opacity:1'/%3E%3Cstop offset='100%25'
-style='stop-color:%232c3e50;stop-opacity:1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g2)' width='200'
-height='300'/%3E%3Ctext x='50%25' y='50%25' font-size='14' font-weight='bold' fill='white' text-anchor='middle'%3EAll of
-Us%3C/text%3E%3Ctext x='50%25' y='65%25' font-size='14' font-weight='bold' fill='white' text-anchor='middle'%3EAre
-Dead%3C/text%3E%3C/svg%3E", status: "Watched"},
-{title: "Sweet Home", year: "2020", rating: "8.2", genre: "Action, Drama, Fantasy", poster: "data:image/svg+xml,%3Csvg
-xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300'%3E%3Cdefs%3E%3ClinearGradient id='g3'%3E%3Cstop offset='0%25'
-style='stop-color:%23e74c3c;stop-opacity:1'/%3E%3Cstop offset='100%25'
-style='stop-color:%235d4037;stop-opacity:1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g3)' width='200'
-height='300'/%3E%3Ctext x='50%25' y='50%25' font-size='14' font-weight='bold' fill='white'
-text-anchor='middle'%3ESweet%3C/text%3E%3Ctext x='50%25' y='65%25' font-size='14' font-weight='bold' fill='white'
-text-anchor='middle'%3EHome%3C/text%3E%3C/svg%3E", status: "Watched"},
-{title: "My Name", year: "2021", rating: "7.8", genre: "Action, Crime, Drama", poster: "data:image/svg+xml,%3Csvg
-xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300'%3E%3Cdefs%3E%3ClinearGradient id='g4'%3E%3Cstop offset='0%25'
-style='stop-color:%239b59b6;stop-opacity:1'/%3E%3Cstop offset='100%25'
-style='stop-color:%232980b9;stop-opacity:1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g4)' width='200'
-height='300'/%3E%3Ctext x='50%25' y='50%25' font-size='16' font-weight='bold' fill='white' text-anchor='middle'%3EMy
-Name%3C/text%3E%3C/svg%3E", status: "Watched"},
-{title: "The Glory", year: "2022", rating: "8.4", genre: "Drama, Thriller", poster: "data:image/svg+xml,%3Csvg
-xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300'%3E%3Cdefs%3E%3ClinearGradient id='g5'%3E%3Cstop offset='0%25'
-style='stop-color:%23f39c12;stop-opacity:1'/%3E%3Cstop offset='100%25'
-style='stop-color:%23c0392b;stop-opacity:1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g5)' width='200'
-height='300'/%3E%3Ctext x='50%25' y='50%25' font-size='14' font-weight='bold' fill='white' text-anchor='middle'%3EThe
-Glory%3C/text%3E%3C/svg%3E", status: "Watched"},
-{title: "Bloodhounds", year: "2023", rating: "7.3", genre: "Action, Crime, Drama", poster: "data:image/svg+xml,%3Csvg
-xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300'%3E%3Cdefs%3E%3ClinearGradient id='g6'%3E%3Cstop offset='0%25'
-style='stop-color:%23c0392b;stop-opacity:1'/%3E%3Cstop offset='100%25'
-style='stop-color:%23000;stop-opacity:1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g6)' width='200'
-height='300'/%3E%3Ctext x='50%25' y='50%25' font-size='13' font-weight='bold' fill='white'
-text-anchor='middle'%3EBloodhounds%3C/text%3E%3C/svg%3E", status: "Watched"},
-{title: "Hellbound", year: "2021", rating: "6.9", genre: "Drama, Fantasy, Horror", poster: "data:image/svg+xml,%3Csvg
-xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300'%3E%3Cdefs%3E%3ClinearGradient id='g7'%3E%3Cstop offset='0%25'
-style='stop-color:%232c3e50;stop-opacity:1'/%3E%3Cstop offset='100%25'
-style='stop-color:%238e44ad;stop-opacity:1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g7)' width='200'
-height='300'/%3E%3Ctext x='50%25' y='50%25' font-size='14' font-weight='bold' fill='white'
-text-anchor='middle'%3EHellbound%3C/text%3E%3C/svg%3E", status: "Watched"},
-{title: "Vincenzo", year: "2021", rating: "8.5", genre: "Comedy, Crime, Drama", poster: "data:image/svg+xml,%3Csvg
-xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300'%3E%3Cdefs%3E%3ClinearGradient id='g8'%3E%3Cstop offset='0%25'
-style='stop-color:%233498db;stop-opacity:1'/%3E%3Cstop offset='100%25'
-style='stop-color:%231abc9c;stop-opacity:1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g8)' width='200'
-height='300'/%3E%3Ctext x='50%25' y='50%25' font-size='14' font-weight='bold' fill='white'
-text-anchor='middle'%3EVincenzo%3C/text%3E%3C/svg%3E", status: "Watched"},
-{title: "Alice in Borderland", year: "2020", rating: "7.8", genre: "Action, Drama, Fantasy", poster:
-"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300'%3E%3Cdefs%3E%3ClinearGradient
-id='g9'%3E%3Cstop offset='0%25' style='stop-color:%2395a5a6;stop-opacity:1'/%3E%3Cstop offset='100%25'
-style='stop-color:%232c3e50;stop-opacity:1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g9)' width='200'
-height='300'/%3E%3Ctext x='50%25' y='40%25' font-size='12' font-weight='bold' fill='white' text-anchor='middle'%3EAlice
-in%3C/text%3E%3Ctext x='50%25' y='55%25' font-size='12' font-weight='bold' fill='white'
-text-anchor='middle'%3EBorderland%3C/text%3E%3C/svg%3E", status: "Watched"},
-{title: "Mirzapur", year: "2018", rating: "8.5", genre: "Action, Crime, Drama", poster: "data:image/svg+xml,%3Csvg
-xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300'%3E%3Cdefs%3E%3ClinearGradient id='g10'%3E%3Cstop offset='0%25'
-style='stop-color:%23d4af37;stop-opacity:1'/%3E%3Cstop offset='100%25'
-style='stop-color:%238b4513;stop-opacity:1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g10)' width='200'
-height='300'/%3E%3Ctext x='50%25' y='50%25' font-size='14' font-weight='bold' fill='white'
-text-anchor='middle'%3EMirzapur%3C/text%3E%3C/svg%3E", status: "Watched"},
-{title: "Farzi", year: "2023", rating: "8.2", genre: "Crime, Drama, Thriller", poster: "data:image/svg+xml,%3Csvg
-xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300'%3E%3Cdefs%3E%3ClinearGradient id='g11'%3E%3Cstop offset='0%25'
-style='stop-color:%2327ae60;stop-opacity:1'/%3E%3Cstop offset='100%25'
-style='stop-color:%23229954;stop-opacity:1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g11)' width='200'
-height='300'/%3E%3Ctext x='50%25' y='50%25' font-size='16' font-weight='bold' fill='white'
-text-anchor='middle'%3EFarzi%3C/text%3E%3C/svg%3E", status: "Watched"},
-{title: "The Family Man", year: "2019", rating: "8.8", genre: "Action, Crime, Drama", poster: "data:image/svg+xml,%3Csvg
-xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300'%3E%3Cdefs%3E%3ClinearGradient id='g12'%3E%3Cstop offset='0%25'
-style='stop-color:%232980b9;stop-opacity:1'/%3E%3Cstop offset='100%25'
-style='stop-color:%231a5276;stop-opacity:1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g12)' width='200'
-height='300'/%3E%3Ctext x='50%25' y='40%25' font-size='12' font-weight='bold' fill='white' text-anchor='middle'%3EThe
-Family%3C/text%3E%3Ctext x='50%25' y='55%25' font-size='12' font-weight='bold' fill='white'
-text-anchor='middle'%3EMan%3C/text%3E%3C/svg%3E", status: "Watched"},
-{title: "Scam 1992", year: "2020", rating: "9.2", genre: "Biography, Crime, Drama", poster: "data:image/svg+xml,%3Csvg
-xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300'%3E%3Cdefs%3E%3ClinearGradient id='g13'%3E%3Cstop offset='0%25'
-style='stop-color:%2334495e;stop-opacity:1'/%3E%3Cstop offset='100%25'
-style='stop-color:%232c3e50;stop-opacity:1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g13)' width='200'
-height='300'/%3E%3Ctext x='50%25' y='45%25' font-size='18' font-weight='bold' fill='%23f39c12'
-text-anchor='middle'%3E1992%3C/text%3E%3Ctext x='50%25' y='60%25' font-size='12' font-weight='bold' fill='white'
-text-anchor='middle'%3EScam%3C/text%3E%3C/svg%3E", status: "Watched"},
-{title: "Money Heist", year: "2017", rating: "8.3", genre: "Crime, Drama, Thriller", poster: "data:image/svg+xml,%3Csvg
-xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300'%3E%3Cdefs%3E%3ClinearGradient id='g14'%3E%3Cstop offset='0%25'
-style='stop-color:%23c0392b;stop-opacity:1'/%3E%3Cstop offset='100%25'
-style='stop-color:%23922b21;stop-opacity:1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g14)' width='200'
-height='300'/%3E%3Ctext x='50%25' y='40%25' font-size='12' font-weight='bold' fill='white'
-text-anchor='middle'%3EMoney%3C/text%3E%3Ctext x='50%25' y='55%25' font-size='12' font-weight='bold' fill='white'
-text-anchor='middle'%3EHeist%3C/text%3E%3C/svg%3E", status: "Watched"},
-{title: "The Boys", year: "2019", rating: "8.7", genre: "Action, Comedy, Crime", poster: "data:image/svg+xml,%3Csvg
-xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300'%3E%3Cdefs%3E%3ClinearGradient id='g15'%3E%3Cstop offset='0%25'
-style='stop-color:%23f39c12;stop-opacity:1'/%3E%3Cstop offset='100%25'
-style='stop-color:%23e67e22;stop-opacity:1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g15)' width='200'
-height='300'/%3E%3Ctext x='50%25' y='50%25' font-size='16' font-weight='bold' fill='white' text-anchor='middle'%3EThe
-Boys%3C/text%3E%3C/svg%3E", status: "Watched"},
-{title: "Wednesday", year: "2022", rating: "8.1", genre: "Comedy, Crime, Fantasy", poster: "data:image/svg+xml,%3Csvg
-xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300'%3E%3Cdefs%3E%3ClinearGradient id='g16'%3E%3Cstop offset='0%25'
-style='stop-color:%231a1a1a;stop-opacity:1'/%3E%3Cstop offset='100%25'
-style='stop-color:%23333;stop-opacity:1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g16)' width='200'
-height='300'/%3E%3Ctext x='50%25' y='50%25' font-size='14' font-weight='bold' fill='%23fff'
-text-anchor='middle'%3EWednesday%3C/text%3E%3C/svg%3E", status: "Plan to Watch"},
-{title: "The Witcher", year: "2019", rating: "8.0", genre: "Action, Adventure, Drama", poster:
-"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300'%3E%3Cdefs%3E%3ClinearGradient
-id='g17'%3E%3Cstop offset='0%25' style='stop-color:%238b0000;stop-opacity:1'/%3E%3Cstop offset='100%25'
-style='stop-color:%23000;stop-opacity:1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g17)' width='200'
-height='300'/%3E%3Ctext x='50%25' y='50%25' font-size='13' font-weight='bold' fill='%23ffd700'
-text-anchor='middle'%3EThe Witcher%3C/text%3E%3C/svg%3E", status: "Watched"},
-{title: "Peaky Blinders", year: "2013", rating: "8.8", genre: "Crime, Drama", poster: "data:image/svg+xml,%3Csvg
-xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300'%3E%3Cdefs%3E%3ClinearGradient id='g18'%3E%3Cstop offset='0%25'
-style='stop-color:%231a1a1a;stop-opacity:1'/%3E%3Cstop offset='100%25'
-style='stop-color:%23444;stop-opacity:1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g18)' width='200'
-height='300'/%3E%3Ctext x='50%25' y='40%25' font-size='12' font-weight='bold' fill='%23ff6b6b'
-text-anchor='middle'%3EPeaky%3C/text%3E%3Ctext x='50%25' y='55%25' font-size='12' font-weight='bold' fill='%23ff6b6b'
-text-anchor='middle'%3EBlinders%3C/text%3E%3C/svg%3E", status: "Watched"},
-{title: "Lupin", year: "2021", rating: "8.1", genre: "Action, Adventure, Crime", poster: "data:image/svg+xml,%3Csvg
-xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300'%3E%3Cdefs%3E%3ClinearGradient id='g19'%3E%3Cstop offset='0%25'
-style='stop-color:%234a148c;stop-opacity:1'/%3E%3Cstop offset='100%25'
-style='stop-color:%232a0845;stop-opacity:1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g19)' width='200'
-height='300'/%3E%3Ctext x='50%25' y='50%25' font-size='16' font-weight='bold' fill='%23ff6b6b'
-text-anchor='middle'%3ELupin%3C/text%3E%3C/svg%3E", status: "Watched"},
-{title: "Lucifer", year: "2015", rating: "8.1", genre: "Crime, Drama, Fantasy", poster: "data:image/svg+xml,%3Csvg
-xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300'%3E%3Cdefs%3E%3ClinearGradient id='g20'%3E%3Cstop offset='0%25'
-style='stop-color:%23d4a574;stop-opacity:1'/%3E%3Cstop offset='100%25'
-style='stop-color:%23664d33;stop-opacity:1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g20)' width='200'
-height='300'/%3E%3Ctext x='50%25' y='50%25' font-size='14' font-weight='bold' fill='%23fff'
-text-anchor='middle'%3ELucifer%3C/text%3E%3C/svg%3E", status: "Watched"},
-{title: "The Last of Us", year: "2023", rating: "8.3", genre: "Action, Adventure, Drama", poster:
-"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300'%3E%3Cdefs%3E%3ClinearGradient
-id='g21'%3E%3Cstop offset='0%25' style='stop-color:%23556b2f;stop-opacity:1'/%3E%3Cstop offset='100%25'
-style='stop-color:%23000;stop-opacity:1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g21)' width='200'
-height='300'/%3E%3Ctext x='50%25' y='40%25' font-size='12' font-weight='bold' fill='%23ffd700'
-text-anchor='middle'%3EThe Last%3C/text%3E%3Ctext x='50%25' y='55%25' font-size='12' font-weight='bold' fill='%23ffd700'
-text-anchor='middle'%3Eof Us%3C/text%3E%3C/svg%3E", status: "Plan to Watch"},
-{title: "Game of Thrones", year: "2011", rating: "9.2", genre: "Action, Adventure, Drama", poster:
-"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300'%3E%3Cdefs%3E%3ClinearGradient
-id='g22'%3E%3Cstop offset='0%25' style='stop-color:%23000;stop-opacity:1'/%3E%3Cstop offset='100%25'
-style='stop-color:%23333;stop-opacity:1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g22)' width='200'
-height='300'/%3E%3Ctext x='50%25' y='40%25' font-size='12' font-weight='bold' fill='%23ffd700'
-text-anchor='middle'%3EGame of%3C/text%3E%3Ctext x='50%25' y='55%25' font-size='12' font-weight='bold' fill='%23ffd700'
-text-anchor='middle'%3EThrones%3C/text%3E%3C/svg%3E", status: "Watched"},
-{title: "Sex Education", year: "2019", rating: "8.0", genre: "Comedy, Drama", poster: "data:image/svg+xml,%3Csvg
-xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300'%3E%3Cdefs%3E%3ClinearGradient id='g23'%3E%3Cstop offset='0%25'
-style='stop-color:%231b5e20;stop-opacity:1'/%3E%3Cstop offset='100%25'
-style='stop-color:%23003d00;stop-opacity:1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g23)' width='200'
-height='300'/%3E%3Ctext x='50%25' y='40%25' font-size='12' font-weight='bold' fill='%23fff'
-text-anchor='middle'%3ESex%3C/text%3E%3Ctext x='50%25' y='55%25' font-size='12' font-weight='bold' fill='%23fff'
-text-anchor='middle
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CineTrack - Your Series Universe</title>
+    <title>CineTrack PRO - Your Series Universe</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+            --accent-primary: #3b82f6;
+            --accent-secondary: #8b5cf6;
+            --text-primary: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --text-tertiary: #64748b;
+            --border-color: #475569;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --favorite: #fbbf24;
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #e2e8f0;
+            --accent-primary: #3b82f6;
+            --accent-secondary: #8b5cf6;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-tertiary: #64748b;
+            --border-color: #cbd5e1;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --favorite: #fbbf24;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -164,23 +47,29 @@ text-anchor='middle
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            color: #e2e8f0;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            color: var(--text-primary);
             min-height: 100vh;
+            transition: background 0.3s ease;
         }
 
         .navbar {
             background: rgba(15, 23, 42, 0.95);
             backdrop-filter: blur(10px);
             padding: 1rem 2rem;
-            border-bottom: 2px solid #3b82f6;
+            border-bottom: 2px solid var(--accent-primary);
             position: sticky;
             top: 0;
             z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="light"] .navbar {
+            background: rgba(255, 255, 255, 0.95);
         }
 
         .navbar-content {
-            max-width: 1400px;
+            max-width: 1600px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
@@ -192,14 +81,38 @@ text-anchor='middle
         .logo {
             font-size: 1.8rem;
             font-weight: 900;
-            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .theme-toggle {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            background: var(--accent-primary);
         }
 
         .stats {
             display: flex;
             gap: 2rem;
+            flex-wrap: wrap;
         }
 
         .stat-item {
@@ -209,23 +122,23 @@ text-anchor='middle
         .stat-number {
             font-size: 1.5rem;
             font-weight: bold;
-            color: #3b82f6;
+            color: var(--accent-primary);
         }
 
         .stat-label {
-            color: #94a3b8;
+            color: var(--text-secondary);
             font-size: 0.8rem;
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1600px;
             margin: 0 auto;
             padding: 2rem;
         }
 
         .hero-section {
             text-align: center;
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
         }
 
         .hero-section h1 {
@@ -234,11 +147,12 @@ text-anchor='middle
         }
 
         .add-section {
-            background: linear-gradient(135deg, #1e293b, #334155);
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
             border-radius: 15px;
             padding: 2rem;
             margin-bottom: 2rem;
-            border: 1px solid #475569;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
         }
 
         .input-group {
@@ -248,18 +162,21 @@ text-anchor='middle
         }
 
         input,
-        select {
+        select,
+        textarea {
             padding: 0.9rem;
-            border: 1.5px solid #475569;
+            border: 1.5px solid var(--border-color);
             border-radius: 8px;
-            background: #0f172a;
-            color: #e2e8f0;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: inherit;
         }
 
         input:focus,
-        select:focus {
+        select:focus,
+        textarea:focus {
             outline: none;
-            border-color: #3b82f6;
+            border-color: var(--accent-primary);
             box-shadow: 0 0 12px rgba(59, 130, 246, 0.3);
         }
 
@@ -270,13 +187,54 @@ text-anchor='middle
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
-            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
             color: white;
         }
 
         .btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        .search-filter-section {
+            background: var(--bg-secondary);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .filter-controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .filter-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .range-display {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
         }
 
         .filter-section {
@@ -290,39 +248,54 @@ text-anchor='middle
         .chip {
             padding: 0.5rem 1rem;
             border-radius: 20px;
-            border: 1.5px solid #475569;
+            border: 1.5px solid var(--border-color);
             background: transparent;
-            color: #cbd5e1;
+            color: var(--text-secondary);
             cursor: pointer;
             transition: all 0.3s;
         }
 
         .chip:hover,
         .chip.active {
-            background: #3b82f6;
-            border-color: #3b82f6;
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
             color: white;
         }
 
-        .view-toggle {
+        .dashboard {
+            background: var(--bg-secondary);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .dashboard-header {
             display: flex;
-            gap: 0.5rem;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
         }
 
-        .view-btn {
-            padding: 0.5rem 1rem;
-            border: 1.5px solid #475569;
-            border-radius: 6px;
-            background: transparent;
-            color: #cbd5e1;
-            cursor: pointer;
-            transition: all 0.3s;
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
         }
 
-        .view-btn.active {
-            background: #3b82f6;
-            border-color: #3b82f6;
-            color: white;
+        .chart-container {
+            background: var(--bg-tertiary);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+        }
+
+        .chart-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
         }
 
         .series-grid {
@@ -332,26 +305,28 @@ text-anchor='middle
         }
 
         .series-card {
-            background: linear-gradient(135deg, #1e293b, #334155);
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
             border-radius: 12px;
             overflow: hidden;
-            border: 1px solid #475569;
+            border: 1px solid var(--border-color);
             transition: all 0.3s;
             animation: fadeIn 0.4s;
+            position: relative;
         }
 
         .series-card:hover {
             transform: translateY(-8px);
             box-shadow: 0 12px 40px rgba(59, 130, 246, 0.3);
-            border-color: #3b82f6;
+            border-color: var(--accent-primary);
         }
 
         .poster-container {
             position: relative;
             width: 100%;
             padding-bottom: 150%;
-            background: #0f172a;
+            background: var(--bg-primary);
             overflow: hidden;
+            cursor: pointer;
         }
 
         .poster {
@@ -359,6 +334,30 @@ text-anchor='middle
             width: 100%;
             height: 100%;
             object-fit: cover;
+        }
+
+        .favorite-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 2;
+            transition: all 0.3s;
+        }
+
+        .favorite-badge:hover {
+            transform: scale(1.2);
+        }
+
+        .favorite-badge.active {
+            color: var(--favorite);
         }
 
         .status-badge {
@@ -373,18 +372,34 @@ text-anchor='middle
         }
 
         .badge-watched {
-            background: #10b981;
+            background: var(--success);
             color: white;
         }
 
         .badge-rewatch {
-            background: #f59e0b;
+            background: var(--warning);
             color: white;
         }
 
         .badge-plan {
-            background: #ef4444;
+            background: var(--danger);
             color: white;
+        }
+
+        .badge-watching {
+            background: var(--accent-primary);
+            color: white;
+        }
+
+        .priority-badge {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: var(--favorite);
+            padding: 0.3rem 0.6rem;
+            border-radius: 15px;
+            font-size: 0.7rem;
         }
 
         .card-content {
@@ -405,17 +420,17 @@ text-anchor='middle
         }
 
         .card-year {
-            color: #94a3b8;
+            color: var(--text-secondary);
         }
 
         .card-rating {
-            color: #f59e0b;
+            color: var(--warning);
             font-weight: 600;
         }
 
         .card-genre {
             font-size: 0.8rem;
-            color: #64748b;
+            color: var(--text-tertiary);
             margin-bottom: 0.8rem;
         }
 
@@ -429,14 +444,15 @@ text-anchor='middle
             padding: 0.6rem;
             border: none;
             border-radius: 6px;
-            background: #334155;
-            color: #e2e8f0;
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
             cursor: pointer;
             transition: all 0.3s;
+            font-size: 0.85rem;
         }
 
         .card-btn:hover {
-            background: #475569;
+            background: var(--border-color);
         }
 
         .card-btn.delete {
@@ -447,49 +463,135 @@ text-anchor='middle
             background: #991b1b;
         }
 
-        .table-view {
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg-secondary);
+            border-radius: 15px;
+            padding: 2rem;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 2px solid var(--accent-primary);
+            animation: slideUp 0.3s;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .close-btn:hover {
+            color: var(--danger);
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .modal-poster {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .star-rating {
+            display: flex;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+        }
+
+        .star {
+            cursor: pointer;
+            color: var(--text-tertiary);
+            transition: all 0.2s;
+        }
+
+        .star:hover,
+        .star.active {
+            color: var(--favorite);
+            transform: scale(1.2);
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            border: 1px solid var(--accent-primary);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            z-index: 3000;
+            animation: slideInRight 0.3s;
             display: none;
         }
 
-        .table-view.active {
+        .toast.active {
             display: block;
-        }
-
-        .series-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: linear-gradient(135deg, #1e293b, #334155);
-            border-radius: 12px;
-            overflow: hidden;
-        }
-
-        .series-table thead {
-            background: #0f172a;
-            border-bottom: 2px solid #3b82f6;
-        }
-
-        .series-table th,
-        .series-table td {
-            padding: 1rem;
-            text-align: left;
-            border-bottom: 1px solid #475569;
-        }
-
-        .series-table tbody tr:hover {
-            background: rgba(59, 130, 246, 0.1);
-        }
-
-        .poster-small {
-            width: 50px;
-            height: 75px;
-            object-fit: cover;
-            border-radius: 4px;
         }
 
         .empty-state {
             text-align: center;
             padding: 3rem;
-            color: #64748b;
+            color: var(--text-tertiary);
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid var(--text-tertiary);
+            border-top-color: var(--accent-primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
         }
 
         @keyframes fadeIn {
@@ -504,13 +606,49 @@ text-anchor='middle
             }
         }
 
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
         @media (max-width: 768px) {
-            .input-group {
+
+            .input-group,
+            .filter-controls {
                 grid-template-columns: 1fr;
             }
 
             .series-grid {
                 grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+
+            .stats {
+                gap: 1rem;
             }
         }
     </style>
@@ -519,7 +657,7 @@ text-anchor='middle
 <body>
     <nav class="navbar">
         <div class="navbar-content">
-            <div class="logo">🎬 CineTrack</div>
+            <div class="logo">🎬 CineTrack PRO</div>
             <div class="stats">
                 <div class="stat-item">
                     <div class="stat-number" id="totalCount">0</div>
@@ -530,17 +668,33 @@ text-anchor='middle
                     <div class="stat-label">Watched</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-number" id="planCount">0</div>
-                    <div class="stat-label">Plan</div>
+                    <div class="stat-number" id="favoritesCount">0</div>
+                    <div class="stat-label">Favorites</div>
                 </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="watchingCount">0</div>
+                    <div class="stat-label">Watching</div>
+                </div>
+            </div>
+            <div class="nav-actions">
+                <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Theme">🌙</button>
+                <button class="btn btn-secondary" onclick="fetchAllPosters()" id="fetchPostersBtn"
+                    title="Load Real Posters from OMDb">🖼️ Fetch Posters</button>
+                <button class="btn btn-secondary" onclick="resetDatabase()" title="Reset to 200+ Series">🔄 Reset
+                    DB</button>
+                <button class="btn btn-secondary" onclick="exportJSON()">📥 Export</button>
+                <button class="btn btn-secondary" onclick="document.getElementById('importFile').click()">📤
+                    Import</button>
             </div>
         </div>
     </nav>
 
+    <input type="file" id="importFile" accept=".json,.csv" style="display:none" onchange="importData(event)">
+
     <div class="container">
         <div class="hero-section">
             <h1>🎭 Your Personal Series Universe</h1>
-            <p>Track and organize your favorite TV series</p>
+            <p>Track, analyze, and organize your favorite TV series</p>
         </div>
 
         <div class="add-section">
@@ -549,6 +703,7 @@ text-anchor='middle
                 <input id="titleInput" type="text" placeholder="Enter series name (Breaking Bad, Squid Game, etc.)">
                 <select id="statusInput">
                     <option>Watched</option>
+                    <option>Currently Watching</option>
                     <option>Rewatch</option>
                     <option>Plan to Watch</option>
                 </select>
@@ -556,92 +711,304 @@ text-anchor='middle
             </div>
         </div>
 
+        <div class="search-filter-section">
+            <input type="text" class="search-bar" id="searchInput" placeholder="🔍 Search series by name..."
+                oninput="applyFilters()">
+
+            <div class="filter-controls">
+                <div class="filter-group">
+                    <label>Genre</label>
+                    <select id="genreFilter" onchange="applyFilters()">
+                        <option value="">All Genres</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Rating Range</label>
+                    <input type="range" id="ratingMin" min="0" max="10" step="0.1" value="0"
+                        oninput="updateRangeDisplay(); applyFilters()">
+                    <div class="range-display" id="ratingRange">0.0 - 10.0</div>
+                </div>
+                <div class="filter-group">
+                    <label>Year Range</label>
+                    <input type="range" id="yearMin" min="1990" max="2024" value="1990"
+                        oninput="updateRangeDisplay(); applyFilters()">
+                    <div class="range-display" id="yearRange">1990 - 2024</div>
+                </div>
+                <div class="filter-group">
+                    <label>Quick Filters</label>
+                    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                        <button class="chip" onclick="toggleFilter('favorites')">⭐ Favorites</button>
+                        <button class="chip" onclick="toggleFilter('high-rated')">📈 High Rated (8+)</button>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-secondary" onclick="clearFilters()" style="margin-top: 1rem;">Clear All
+                Filters</button>
+        </div>
+
+        <div class="dashboard">
+            <div class="dashboard-header">
+                <h2>📊 Statistics & Analytics</h2>
+                <button class="btn btn-secondary" onclick="toggleDashboard()">Toggle</button>
+            </div>
+            <div class="dashboard-grid" id="dashboardContent">
+                <div class="chart-container">
+                    <div class="chart-title">Status Distribution</div>
+                    <canvas id="statusChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <div class="chart-title">Genre Breakdown</div>
+                    <canvas id="genreChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <div class="chart-title">Rating Distribution</div>
+                    <canvas id="ratingChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <div class="chart-title">Statistics</div>
+                    <div id="statsInfo"></div>
+                </div>
+            </div>
+        </div>
+
         <div class="filter-section">
-            <span style="color: #94a3b8;">Filter:</span>
+            <span style="color: var(--text-secondary);">Filter:</span>
             <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
                 <button class="chip active" onclick="filterByStatus('all')">All</button>
                 <button class="chip" onclick="filterByStatus('Watched')">✓ Watched</button>
+                <button class="chip" onclick="filterByStatus('Currently Watching')">▶ Watching</button>
                 <button class="chip" onclick="filterByStatus('Rewatch')">⟲ Rewatch</button>
                 <button class="chip" onclick="filterByStatus('Plan to Watch')">📋 Plan</button>
             </div>
-            <select id="sortInput" onchange="render()"
-                style="margin-left: auto; padding: 0.5rem; border-radius: 6px; background: #0f172a; border: 1.5px solid #475569; color: #e2e8f0;">
+            <select id="sortInput" onchange="render()" style="margin-left: auto; padding: 0.5rem; border-radius: 6px;">
                 <option value="date-desc">Recently Added</option>
                 <option value="rating-desc">Highest Rated</option>
                 <option value="title-asc">Title (A-Z)</option>
+                <option value="favorites">Favorites First</option>
             </select>
-            <div class="view-toggle">
-                <button class="view-btn active" onclick="switchView('grid')">🔲 Grid</button>
-                <button class="view-btn" onclick="switchView('table')">≡ Table</button>
-            </div>
         </div>
 
-        <div class="grid-view active">
-            <div class="series-grid" id="seriesGrid"></div>
-        </div>
-
-        <div class="table-view">
-            <table class="series-table">
-                <thead>
-                    <tr>
-                        <th>Poster</th>
-                        <th>Title</th>
-                        <th>Year</th>
-                        <th>Rating</th>
-                        <th>Genre</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="seriesTable"></tbody>
-            </table>
-        </div>
+        <div class="series-grid" id="seriesGrid"></div>
 
         <div id="emptyState" class="empty-state" style="display: none;">
             <div style="font-size: 3rem; margin-bottom: 1rem;">🎭</div>
-            <h3 style="color: #cbd5e1;">No series found</h3>
+            <h3>No series found</h3>
             <p>Add your first series to get started!</p>
         </div>
     </div>
 
+    <div class="modal" id="detailsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Series Details</h2>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
     <script>
         const API_KEY = "93acdead";
-        const STORAGE_KEY = "cinetrack_db";
-        const OFFLINE_DB = [
-            { title: "Squid Game", year: "2021", rating: "8.0", genre: "Drama, Thriller", poster: "https://m.media-amazon.com/images/M/MV5BYWE3YWRiY2EtYsbkMC00YjM1LWJkYzItMmFiMzNlNTU4NzlmXkEyXkFqcGdeQXVyMDg2NTEzMw@@._V1_SX300.jpg", status: "Watched" },
-            { title: "All of Us Are Dead", year: "2022", rating: "7.6", genre: "Action, Drama, Horror", poster: "https://m.media-amazon.com/images/M/MV5BYzljMTczMTItOGY3NS00ZWEwLWFhZTItYzk0NDI3ZTJjMTEyXkEyXkFqcGdeQXVyMTEzMTI5Nzk@._V1_SX300.jpg", status: "Watched" },
-            { title: "Sweet Home", year: "2020", rating: "8.2", genre: "Action, Drama, Fantasy", poster: "https://m.media-amazon.com/images/M/MV5BOWY1OWI3NTItYzE0OS00YmZiLWI5YzAtMzA4N2ZlZDg3OTQ0XkEyXkFqcGdeQXVyMjQwMDg0Ng@@._V1_SX300.jpg", status: "Watched" },
-            { title: "My Name", year: "2021", rating: "7.8", genre: "Action, Crime, Drama", poster: "https://m.media-amazon.com/images/M/MV5BOTlhYTk0YTEtYzlmOC00N2NlLWJiMjItYzNmZTUxNTZiMjA1XkEyXkFqcGdeQXVyMjQwMDg0Ng@@._V1_SX300.jpg", status: "Watched" },
-            { title: "The Glory", year: "2022", rating: "8.4", genre: "Drama, Thriller", poster: "https://m.media-amazon.com/images/M/MV5BN2I4N2ZmNTYtYjMyOS00MjNjLWJjNjMtNGJkYmYwYWU5YzIxXkEyXkFqcGdeQXVyMjQwMDg0Ng@@._V1_SX300.jpg", status: "Watched" },
-            { title: "Bloodhounds", year: "2023", rating: "7.3", genre: "Action, Crime, Drama", poster: "https://m.media-amazon.com/images/M/MV5BNTg5YjkzYi00OTcxLWIwODYtOTg0OWQyYzVlMDkxXkEyXkFqcGdeQXVyMjQwMDg0Ng@@._V1_SX300.jpg", status: "Watched" },
-            { title: "Hellbound", year: "2021", rating: "6.9", genre: "Drama, Fantasy, Horror", poster: "https://m.media-amazon.com/images/M/MV5BYzA5YjBjYzUtN2ZiOS00ZmNlLTk0OTAtMDY1N2U0MGEwZGE2XkEyXkFqcGdeQXVyMjQwMDg0Ng@@._V1_SX300.jpg", status: "Watched" },
-            { title: "Vincenzo", year: "2021", rating: "8.5", genre: "Comedy, Crime, Drama", poster: "https://m.media-amazon.com/images/M/MV5BODcyYjk0ZWItODkyOC00ZDczLWI0MzItMjkxZTM3OGIyZGU3XkEyXkFqcGdeQXVyMjQwMDg0Ng@@._V1_SX300.jpg", status: "Watched" },
-            { title: "Alice in Borderland", year: "2020", rating: "7.8", genre: "Action, Drama, Fantasy", poster: "https://m.media-amazon.com/images/M/MV5BZjczZTMxNDUtYTVhYi00MDI0LWI1ZmItYmZkYjdhY2I4OTdiXkEyXkFqcGdeQXVyMjQwMDg0Ng@@._V1_SX300.jpg", status: "Watched" },
-            { title: "Mirzapur", year: "2018", rating: "8.5", genre: "Action, Crime, Drama", poster: "https://m.media-amazon.com/images/M/MV5BYjQ4ZDYwNTYtMDc4OC00NTgyLWI5YTItN2JmMDhlYjM3NzMyXkEyXkFqcGdeQXVyMjQwMDg0Ng@@._V1_SX300.jpg", status: "Watched" },
-            { title: "Farzi", year: "2023", rating: "8.2", genre: "Crime, Drama, Thriller", poster: "https://m.media-amazon.com/images/M/MV5BNGZkZTU4ZjMtMzc0Yi00ZmMwLWFhMTItMmI4YmZkMjczZTY0XkEyXkFqcGdeQXVyMjQwMDg0Ng@@._V1_SX300.jpg", status: "Watched" },
-            { title: "The Family Man", year: "2019", rating: "8.8", genre: "Action, Crime, Drama", poster: "https://m.media-amazon.com/images/M/MV5BYjcyNTAxMzItZjFmYi00MDhjLWJjMTktYzliYWQwYzU5ZjczXkEyXkFqcGdeQXVyMjQwMDg0Ng@@._V1_SX300.jpg", status: "Watched" },
-            { title: "Scam 1992", year: "2020", rating: "9.2", genre: "Biography, Crime, Drama", poster: "https://m.media-amazon.com/images/M/MV5BYTJmYWY1NDItZDQwYi00ZjAxLTkxY2QtYmEwMDc1YjAxMWEwXkEyXkFqcGdeQXVyMjQwMDg0Ng@@._V1_SX300.jpg", status: "Watched" },
-            { title: "Money Heist", year: "2017", rating: "8.3", genre: "Crime, Drama, Thriller", poster: "https://m.media-amazon.com/images/M/MV5BOWVkODExZGYtNWI3Ni00ZDc1LTkwNGItYTM1MjAwNTcwMDEyXkEyXkFqcGdeQXVyNjAxNzA0OQ@@._V1_SX300.jpg", status: "Watched" },
-            { title: "The Boys", year: "2019", rating: "8.7", genre: "Action, Comedy, Crime", poster: "https://m.media-amazon.com/images/M/MV5BMTg0MjYwNjctOTgzMS00NzQ4LTkwYjYtOTgzY2FjZDkwMTVnXkEyXkFqcGdeQXVyMzQ2MDk5NjU@._V1_SX300.jpg", status: "Watched" },
-            { title: "Wednesday", year: "2022", rating: "8.1", genre: "Comedy, Crime, Fantasy", poster: "https://m.media-amazon.com/images/M/MV5BYjA2Yzg0NzEtNDY0MC00NzAwLWE1MWYtNWM4NTBjMDcyYjk1XkEyXkFqcGdeQXVyMTEzMTI5Nzk@._V1_SX300.jpg", status: "Plan to Watch" },
-            { title: "The Witcher", year: "2019", rating: "8.0", genre: "Action, Adventure, Drama", poster: "https://m.media-amazon.com/images/M/MV5BMjE0MzYyODctNDIwMS00ZGUzLWI4YTctNTM4MzQ0OTc4YjI2XkEyXkFqcGdeQXVyMjQwMDg0Ng@@._V1_SX300.jpg", status: "Watched" },
-            { title: "Peaky Blinders", year: "2013", rating: "8.8", genre: "Crime, Drama", poster: "https://m.media-amazon.com/images/M/MV5BMzAxNTQxMTItNGQxNC00YzExLWIyYWItZDg4ZmZhMjc3OTBhXkEyXkFqcGdeQXVyMzQ2MDk5NjU@._V1_SX300.jpg", status: "Watched" },
-            { title: "Lupin", year: "2021", rating: "8.1", genre: "Action, Adventure, Crime", poster: "https://m.media-amazon.com/images/M/MV5BOWQyZTBjZGUtYjkxYS00YWNlLTk1NTItZmJkYjI0YTlmN2Y4XkEyXkFqcGdeQXVyMjQwMDg0Ng@@._V1_SX300.jpg", status: "Watched" },
-            { title: "Lucifer", year: "2015", rating: "8.1", genre: "Crime, Drama, Fantasy", poster: "https://m.media-amazon.com/images/M/MV5BODkyZWFkODctODhkMS00YWFmLWJjYmItZDY5YzJhNDhjNTg0XkEyXkFqcGdeQXVyMjQwMDg0Ng@@._V1_SX300.jpg", status: "Watched" },
-            { title: "The Last of Us", year: "2023", rating: "8.3", genre: "Action, Adventure, Drama", poster: "https://m.media-amazon.com/images/M/MV5BNzA1ZWQzNTAtMWY2YS00NWE5LTkxYWMtNjZhMTk2OTg2OThhXkEyXkFqcGdeQXVyMDg2NTEzMw@@._V1_SX300.jpg", status: "Plan to Watch" },
-            { title: "Game of Thrones", year: "2011", rating: "9.2", genre: "Action, Adventure, Drama", poster: "https://m.media-amazon.com/images/M/MV5BN2IzYzBiOTgtNWYzLTRmODktOWM0N2ZhZjdjNmM4XkEyXkFqcGdeQXVyNjc1NzM4NzQ@._V1_SX300.jpg", status: "Watched" },
-            { title: "Sex Education", year: "2019", rating: "8.0", genre: "Comedy, Drama", poster: "https://m.media-amazon.com/images/M/MV5BYzAxMTk3ZTAtODExNy00OGUyLWI1NzItZjAyZDkxMTMzZGJiXkEyXkFqcGdeQXVyMjQwMDg0Ng@@._V1_SX300.jpg", status: "Watched" },
-            { title: "One Piece", year: "1999", rating: "8.9", genre: "Action, Adventure, Animation", poster: "https://m.media-amazon.com/images/M/MV5BODcwNWE3OTMtMDc3NS00YjlmLWIwNmEtNDg5NWE5MzhhZGQ5XkEyXkFqcGdeQXVyNzA4ODM3NzE@._V1_SX300.jpg", status: "Rewatch" },
-            { title: "Death Note", year: "2006", rating: "9.0", genre: "Animation, Crime, Drama", poster: "https://m.media-amazon.com/images/M/MV5BODcwNWE3OTMtMDc3NS00YjlmLWIwNmEtNDg5NWE5MzhhZGQ1XkEyXkFqcGdeQXVyNzA4ODM3NzE@._V1_SX300.jpg", status: "Watched" },
-            { title: "Jujutsu Kaisen", year: "2020", rating: "8.5", genre: "Action, Animation, Adventure", poster: "https://m.media-amazon.com/images/M/MV5BODcwNWE3OTMtMDc3NS00YjlmLWIwNmEtNDg5NWE5MzhhZGQ2XkEyXkFqcGdeQXVyNzA4ODM3NzE@._V1_SX300.jpg", status: "Rewatch" },
-            { title: "Solo Leveling", year: "2024", rating: "8.6", genre: "Action, Animation, Adventure", poster: "https://m.media-amazon.com/images/M/MV5BMzAxNTQxMTItNGQxNC00YzExLWIyYWItZDg0ZWE5MzhhZGQ3XkEyXkFqcGdeQXVyMzQ2MDk5NjU@._V1_SX300.jpg", status: "Watched" },
-            { title: "Breaking Bad", year: "2008", rating: "9.5", genre: "Crime, Drama, Thriller", poster: "https://m.media-amazon.com/images/M/MV5BMjQ0OTAwODUxN15BMl5BanBnXkFtZWcwNzM0NzM3NjE@._V1_SX300.jpg", status: "Watched" },
-            { title: "Stranger Things", year: "2016", rating: "8.7", genre: "Drama, Fantasy, Horror", poster: "https://m.media-amazon.com/images/M/MV5BMzAxNDU3NDItOTI1OS00ZWMwLWE4OTEtNDgyZTcwYTQ5MjUxXkEyXkFqcGdeQXVyMTEzMTI5Nzk@._V1_SX300.jpg", status: "Watched" },
-            { title: "The Crown", year: "2016", rating: "8.6", genre: "Biography, Drama, History", poster: "https://m.media-amazon.com/images/M/MV5BMzAxNTEwZTItODgyNC00YzExLWJjZWUtYzY3ZTQ0YjJkMmQ1XkEyXkFqcGdeQXVyMjQwMDg0Ng@@._V1_SX300.jpg", status: "Watched" }
-        ];
+        const STORAGE_KEY = "cinetrack_pro_db";
+        const THEME_KEY = "cinetrack_theme";
 
         let db = [];
         let currentFilter = 'all';
+        let activeFilters = { search: '', genre: '', favorites: false, highRated: false };
+        let charts = {};
+        let currentEditingId = null;
+
+        const OFFLINE_DB = [
+            { title: "Breaking Bad", year: "2008", rating: "9.5", genre: "Crime, Drama, Thriller", status: "Watched" },
+            { title: "Game of Thrones", year: "2011", rating: "9.2", genre: "Action, Adventure, Drama", status: "Watched" },
+            { title: "The Wire", year: "2002", rating: "9.3", genre: "Crime, Drama, Thriller", status: "Plan to Watch" },
+            { title: "The Sopranos", year: "1999", rating: "9.2", genre: "Crime, Drama", status: "Plan to Watch" },
+            { title: "Chernobyl", year: "2019", rating: "9.3", genre: "Drama, History, Thriller", status: "Plan to Watch" },
+            { title: "Band of Brothers", year: "2001", rating: "9.4", genre: "Drama, History, War", status: "Plan to Watch" },
+            { title: "Rick and Morty", year: "2013", rating: "9.1", genre: "Animation, Adventure, Comedy", status: "Watched" },
+            { title: "Avatar: The Last Airbender", year: "2005", rating: "9.3", genre: "Animation, Action, Adventure", status: "Watched" },
+            { title: "The Office", year: "2005", rating: "9.0", genre: "Comedy", status: "Rewatch" },
+            { title: "Stranger Things", year: "2016", rating: "8.7", genre: "Drama, Fantasy, Horror", status: "Watched" },
+            { title: "Dark", year: "2017", rating: "8.7", genre: "Crime, Drama, Mystery", status: "Watched" },
+            { title: "Sherlock", year: "2010", rating: "9.1", genre: "Crime, Drama, Mystery", status: "Watched" },
+            { title: "True Detective", year: "2014", rating: "8.9", genre: "Crime, Drama, Mystery", status: "Watched" },
+            { title: "Peaky Blinders", year: "2013", rating: "8.8", genre: "Crime, Drama", status: "Watched" },
+            { title: "The Crown", year: "2016", rating: "8.6", genre: "Biography, Drama, History", status: "Plan to Watch" },
+            { title: "Mindhunter", year: "2017", rating: "8.6", genre: "Crime, Drama, Thriller", status: "Watched" },
+            { title: "Black Mirror", year: "2011", rating: "8.7", genre: "Drama, Sci-Fi, Thriller", status: "Watched" },
+            { title: "Fargo", year: "2014", rating: "8.9", genre: "Crime, Drama, Thriller", status: "Watched" },
+            { title: "Better Call Saul", year: "2015", rating: "9.0", genre: "Crime, Drama", status: "Watched" },
+            { title: "The Boys", year: "2019", rating: "8.7", genre: "Action, Comedy, Crime", status: "Watched" },
+            { title: "Succession", year: "2018", rating: "8.9", genre: "Drama", status: "Plan to Watch" },
+            { title: "The Last of Us", year: "2023", rating: "8.8", genre: "Action, Adventure, Drama", status: "Plan to Watch" },
+            { title: "House of the Dragon", year: "2022", rating: "8.4", genre: "Action, Adventure, Drama", status: "Plan to Watch" },
+            { title: "The Mandalorian", year: "2019", rating: "8.6", genre: "Action, Adventure, Fantasy", status: "Watched" },
+            { title: "Westworld", year: "2016", rating: "8.5", genre: "Drama, Mystery, Sci-Fi", status: "Watched" },
+            { title: "The Witcher", year: "2019", rating: "8.0", genre: "Action, Adventure, Drama", status: "Watched" },
+            { title: "Money Heist", year: "2017", rating: "8.2", genre: "Action, Crime, Mystery", status: "Watched" },
+            { title: "Narcos", year: "2015", rating: "8.8", genre: "Biography, Crime, Drama", status: "Watched" },
+            { title: "Ozark", year: "2017", rating: "8.5", genre: "Crime, Drama, Thriller", status: "Watched" },
+            { title: "The Handmaid's Tale", year: "2017", rating: "8.4", genre: "Drama, Sci-Fi, Thriller", status: "Plan to Watch" },
+            { title: "Fleabag", year: "2016", rating: "8.7", genre: "Comedy, Drama", status: "Plan to Watch" },
+            { title: "The Queens Gambit", year: "2020", rating: "8.5", genre: "Drama", status: "Watched" },
+            { title: "Squid Game", year: "2021", rating: "8.0", genre: "Action, Drama, Mystery", status: "Watched" },
+            { title: "Wednesday", year: "2022", rating: "8.1", genre: "Comedy, Crime, Fantasy", status: "Watched" },
+            { title: "Lucifer", year: "2016", rating: "8.1", genre: "Crime, Drama, Fantasy", status: "Watched" },
+            { title: "The Umbrella Academy", year: "2019", rating: "7.9", genre: "Action, Adventure, Comedy", status: "Watched" },
+            { title: "Cobra Kai", year: "2018", rating: "8.5", genre: "Action, Comedy, Drama", status: "Watched" },
+            { title: "Vikings", year: "2013", rating: "8.5", genre: "Action, Adventure, Drama", status: "Watched" },
+            { title: "The Walking Dead", year: "2010", rating: "8.1", genre: "Drama, Horror, Thriller", status: "Watched" },
+            { title: "Lost", year: "2004", rating: "8.3", genre: "Adventure, Drama, Fantasy", status: "Watched" },
+            { title: "Prison Break", year: "2005", rating: "8.3", genre: "Action, Crime, Drama", status: "Watched" },
+            { title: "Suits", year: "2011", rating: "8.4", genre: "Comedy, Drama", status: "Watched" },
+            { title: "Friends", year: "1994", rating: "8.9", genre: "Comedy, Romance", status: "Rewatch" },
+            { title: "How I Met Your Mother", year: "2005", rating: "8.3", genre: "Comedy, Romance", status: "Watched" },
+            { title: "The Big Bang Theory", year: "2007", rating: "8.1", genre: "Comedy, Romance", status: "Watched" },
+            { title: "Brooklyn Nine-Nine", year: "2013", rating: "8.4", genre: "Comedy, Crime", status: "Watched" },
+            { title: "Parks and Recreation", year: "2009", rating: "8.6", genre: "Comedy", status: "Plan to Watch" },
+            { title: "Community", year: "2009", rating: "8.5", genre: "Comedy", status: "Plan to Watch" },
+            { title: "Arrow", year: "2012", rating: "7.5", genre: "Action, Adventure, Crime", status: "Watched" },
+            { title: "The Flash", year: "2014", rating: "7.6", genre: "Action, Adventure, Drama", status: "Watched" },
+            { title: "Daredevil", year: "2015", rating: "8.6", genre: "Action, Crime, Drama", status: "Watched" },
+            { title: "Loki", year: "2021", rating: "8.2", genre: "Action, Adventure, Fantasy", status: "Watched" },
+            { title: "WandaVision", year: "2021", rating: "7.9", genre: "Action, Comedy, Drama", status: "Watched" },
+            { title: "Yellowstone", year: "2018", rating: "8.7", genre: "Drama, Western", status: "Plan to Watch" },
+            { title: "The Bear", year: "2022", rating: "8.6", genre: "Comedy, Drama", status: "Plan to Watch" },
+            { title: "Severance", year: "2022", rating: "8.7", genre: "Drama, Mystery, Sci-Fi", status: "Plan to Watch" },
+            { title: "Andor", year: "2022", rating: "8.4", genre: "Action, Adventure, Drama", status: "Plan to Watch" },
+            { title: "House of Cards", year: "2013", rating: "8.7", genre: "Drama", status: "Watched" },
+            { title: "Homeland", year: "2011", rating: "8.3", genre: "Crime, Drama, Mystery", status: "Watched" },
+            { title: "24", year: "2001", rating: "8.4", genre: "Action, Crime, Drama", status: "Watched" },
+            { title: "Dexter", year: "2006", rating: "8.6", genre: "Crime, Drama, Mystery", status: "Watched" },
+            { title: "Mad Men", year: "2007", rating: "8.7", genre: "Drama", status: "Plan to Watch" },
+            { title: "The Expanse", year: "2015", rating: "8.5", genre: "Drama, Mystery, Sci-Fi", status: "Watched" },
+            { title: "The Sandman", year: "2022", rating: "7.7", genre: "Drama, Fantasy, Horror", status: "Plan to Watch" },
+            { title: "Ted Lasso", year: "2020", rating: "8.8", genre: "Comedy, Drama, Sport", status: "Plan to Watch" },
+            { title: "Reacher", year: "2022", rating: "8.0", genre: "Action, Crime, Drama", status: "Plan to Watch" },
+            { title: "Jack Ryan", year: "2018", rating: "8.0", genre: "Action, Drama, Thriller", status: "Watched" },
+            { title: "Mr. Robot", year: "2015", rating: "8.5", genre: "Crime, Drama, Thriller", status: "Watched" },
+            { title: "Silicon Valley", year: "2014", rating: "8.5", genre: "Comedy", status: "Plan to Watch" },
+            { title: "Barry", year: "2018", rating: "8.3", genre: "Action, Comedy, Crime", status: "Plan to Watch" },
+            { title: "Atlanta", year: "2016", rating: "8.6", genre: "Comedy, Drama, Music", status: "Plan to Watch" },
+            { title: "Euphoria", year: "2019", rating: "8.3", genre: "Drama", status: "Plan to Watch" },
+            { title: "White Lotus", year: "2021", rating: "7.9", genre: "Comedy, Drama, Mystery", status: "Plan to Watch" },
+            { title: "Mare of Easttown", year: "2021", rating: "8.4", genre: "Crime, Drama, Mystery", status: "Plan to Watch" },
+            { title: "The Leftovers", year: "2014", rating: "8.3", genre: "Drama, Fantasy, Mystery", status: "Plan to Watch" },
+            { title: "The Good Place", year: "2016", rating: "8.2", genre: "Comedy, Fantasy", status: "Plan to Watch" },
+            { title: "Schitt's Creek", year: "2015", rating: "8.5", genre: "Comedy", status: "Plan to Watch" },
+            { title: "What We Do in the Shadows", year: "2019", rating: "8.6", genre: "Comedy, Horror", status: "Plan to Watch" },
+            { title: "Only Murders in the Building", year: "2021", rating: "8.1", genre: "Comedy, Crime, Drama", status: "Plan to Watch" },
+            { title: "Alice in Borderland", year: "2020", rating: "7.7", genre: "Action, Drama, Mystery", status: "Watched" },
+            { title: "Sweet Home", year: "2020", rating: "7.3", genre: "Drama, Fantasy, Horror", status: "Watched" },
+            { title: "All of Us Are Dead", year: "2022", rating: "7.5", genre: "Action, Drama, Horror", status: "Watched" },
+            { title: "Vincenzo", year: "2021", rating: "8.4", genre: "Action, Comedy, Crime", status: "Watched" },
+            { title: "My Name", year: "2021", rating: "7.8", genre: "Action, Crime, Drama", status: "Watched" },
+            { title: "The Glory", year: "2022", rating: "8.8", genre: "Drama, Thriller", status: "Watched" },
+            { title: "Hellbound", year: "2021", rating: "6.8", genre: "Crime, Drama, Fantasy", status: "Watched" },
+            { title: "Bloodhounds", year: "2023", rating: "8.1", genre: "Action, Crime, Drama", status: "Watched" },
+            { title: "Crash Landing on You", year: "2019", rating: "8.7", genre: "Comedy, Drama, Romance", status: "Plan to Watch" },
+            { title: "Itaewon Class", year: "2020", rating: "8.2", genre: "Drama", status: "Plan to Watch" },
+            { title: "Kingdom", year: "2019", rating: "8.3", genre: "Action, Drama, Fantasy", status: "Plan to Watch" },
+            { title: "Mirzapur", year: "2018", rating: "8.4", genre: "Action, Crime, Drama", status: "Watched" },
+            { title: "The Family Man", year: "2019", rating: "8.7", genre: "Action, Drama, Thriller", status: "Watched" },
+            { title: "Sacred Games", year: "2018", rating: "8.6", genre: "Action, Crime, Drama", status: "Watched" },
+            { title: "Delhi Crime", year: "2019", rating: "8.5", genre: "Crime, Drama, Thriller", status: "Plan to Watch" },
+            { title: "Paatal Lok", year: "2020", rating: "7.5", genre: "Crime, Drama, Thriller", status: "Plan to Watch" },
+            { title: "Scam 1992", year: "2020", rating: "9.5", genre: "Biography, Crime, Drama", status: "Watched" },
+            { title: "Farzi", year: "2023", rating: "8.1", genre: "Crime, Drama, Thriller", status: "Watched" },
+            { title: "Kota Factory", year: "2019", rating: "9.0", genre: "Comedy, Drama", status: "Plan to Watch" },
+            { title: "Panchayat", year: "2020", rating: "8.9", genre: "Comedy, Drama", status: "Plan to Watch" },
+            { title: "Attack on Titan", year: "2013", rating: "9.0", genre: "Animation, Action, Adventure", status: "Watched" },
+            { title: "Death Note", year: "2006", rating: "9.0", genre: "Animation, Crime, Drama", status: "Watched" },
+            { title: "Fullmetal Alchemist: Brotherhood", year: "2009", rating: "9.1", genre: "Animation, Action, Adventure", status: "Watched" },
+            { title: "One Punch Man", year: "2015", rating: "8.7", genre: "Animation, Action, Comedy", status: "Watched" },
+            { title: "Demon Slayer", year: "2019", rating: "8.6", genre: "Animation, Action, Adventure", status: "Watched" },
+            { title: "Jujutsu Kaisen", year: "2020", rating: "8.6", genre: "Animation, Action, Fantasy", status: "Watched" },
+            { title: "My Hero Academia", year: "2016", rating: "8.3", genre: "Animation, Action, Adventure", status: "Watched" },
+            { title: "Hunter x Hunter", year: "2011", rating: "9.0", genre: "Animation, Action, Adventure", status: "Plan to Watch" },
+            { title: "Code Geass", year: "2006", rating: "8.7", genre: "Animation, Action, Drama", status: "Plan to Watch" },
+            { title: "Cowboy Bebop", year: "1998", rating: "8.9", genre: "Animation, Action, Adventure", status: "Plan to Watch" },
+            { title: "One Piece", year: "1999", rating: "8.9", genre: "Animation, Action, Adventure", status: "Rewatch" },
+            { title: "Naruto", year: "2002", rating: "8.4", genre: "Animation, Action, Adventure", status: "Watched" },
+            { title: "Bleach", year: "2004", rating: "8.2", genre: "Animation, Action, Adventure", status: "Watched" },
+            { title: "Dragon Ball Z", year: "1989", rating: "8.8", genre: "Animation, Action, Adventure", status: "Rewatch" },
+            { title: "Vinland Saga", year: "2019", rating: "8.8", genre: "Animation, Action, Adventure", status: "Plan to Watch" },
+            { title: "Steins Gate", year: "2011", rating: "8.8", genre: "Animation, Drama, Sci-Fi", status: "Plan to Watch" },
+            { title: "Spy x Family", year: "2022", rating: "8.3", genre: "Animation, Action, Comedy", status: "Plan to Watch" },
+            { title: "Chainsaw Man", year: "2022", rating: "8.3", genre: "Animation, Action, Fantasy", status: "Plan to Watch" },
+            { title: "Mob Psycho 100", year: "2016", rating: "8.5", genre: "Animation, Action, Comedy", status: "Plan to Watch" },
+            { title: "Arcane", year: "2021", rating: "9.0", genre: "Animation, Action, Adventure", status: "Watched" },
+            { title: "Castlevania", year: "2017", rating: "8.3", genre: "Animation, Action, Adventure", status: "Watched" },
+            { title: "Love Death and Robots", year: "2019", rating: "8.4", genre: "Animation, Short, Action", status: "Watched" },
+            { title: "Invincible", year: "2021", rating: "8.7", genre: "Animation, Action, Adventure", status: "Watched" },
+            { title: "BoJack Horseman", year: "2014", rating: "8.8", genre: "Animation, Comedy, Drama", status: "Plan to Watch" },
+            { title: "Futurama", year: "1999", rating: "8.5", genre: "Animation, Adventure, Comedy", status: "Watched" },
+            { title: "South Park", year: "1997", rating: "8.7", genre: "Animation, Comedy", status: "Watched" },
+            { title: "Family Guy", year: "1999", rating: "8.1", genre: "Animation, Comedy", status: "Watched" },
+            { title: "Archer", year: "2009", rating: "8.6", genre: "Animation, Action, Comedy", status: "Plan to Watch" },
+            { title: "Twin Peaks", year: "1990", rating: "8.8", genre: "Crime, Drama, Mystery", status: "Plan to Watch" },
+            { title: "Scrubs", year: "2001", rating: "8.4", genre: "Comedy, Drama", status: "Watched" },
+            { title: "House", year: "2004", rating: "8.7", genre: "Drama, Mystery", status: "Watched" },
+            { title: "Grey's Anatomy", year: "2005", rating: "7.6", genre: "Drama, Romance", status: "Watched" },
+            { title: "Hannibal", year: "2013", rating: "8.5", genre: "Crime, Drama, Horror", status: "Plan to Watch" },
+            { title: "The X-Files", year: "1993", rating: "8.6", genre: "Crime, Drama, Mystery", status: "Plan to Watch" },
+            { title: "Boardwalk Empire", year: "2010", rating: "8.5", genre: "Crime, Drama", status: "Plan to Watch" },
+            { title: "Justified", year: "2010", rating: "8.6", genre: "Action, Crime, Drama", status: "Plan to Watch" },
+            { title: "The Shield", year: "2002", rating: "8.7", genre: "Action, Crime, Drama", status: "Plan to Watch" },
+            { title: "Six Feet Under", year: "2001", rating: "8.7", genre: "Drama", status: "Plan to Watch" },
+            { title: "Battlestar Galactica", year: "2004", rating: "8.7", genre: "Action, Adventure, Drama", status: "Plan to Watch" },
+            { title: "Firefly", year: "2002", rating: "9.0", genre: "Adventure, Drama, Sci-Fi", status: "Plan to Watch" },
+            { title: "Doctor Who", year: "2005", rating: "8.6", genre: "Adventure, Drama, Sci-Fi", status: "Plan to Watch" },
+            { title: "The Americans", year: "2013", rating: "8.4", genre: "Crime, Drama, Mystery", status: "Plan to Watch" },
+            { title: "Killing Eve", year: "2018", rating: "8.1", genre: "Action, Adventure, Drama", status: "Plan to Watch" },
+            { title: "Veep", year: "2012", rating: "8.3", genre: "Comedy", status: "Plan to Watch" },
+            { title: "Curb Your Enthusiasm", year: "2000", rating: "8.8", genre: "Comedy", status: "Plan to Watch" },
+            { title: "30 Rock", year: "2006", rating: "8.3", genre: "Comedy", status: "Plan to Watch" },
+            { title: "Arrested Development", year: "2003", rating: "8.7", genre: "Comedy", status: "Plan to Watch" },
+            { title: "It's Always Sunny in Philadelphia", year: "2005", rating: "8.8", genre: "Comedy", status: "Plan to Watch" },
+            { title: "Shameless", year: "2011", rating: "8.5", genre: "Comedy, Drama", status: "Plan to Watch" },
+            { title: "Supernatural", year: "2005", rating: "8.4", genre: "Drama, Fantasy, Horror", status: "Watched" },
+            { title: "The Vampire Diaries", year: "2009", rating: "7.7", genre: "Drama, Fantasy, Horror", status: "Watched" },
+            { title: "Fringe", year: "2008", rating: "8.4", genre: "Drama, Mystery, Sci-Fi", status: "Plan to Watch" },
+            { title: "Person of Interest", year: "2011", rating: "8.4", genre: "Action, Crime, Drama", status: "Plan to Watch" },
+            { title: "Halt and Catch Fire", year: "2014", rating: "8.3", genre: "Drama", status: "Plan to Watch" },
+            { title: "The Newsroom", year: "2012", rating: "8.6", genre: "Drama", status: "Plan to Watch" },
+            { title: "The West Wing", year: "1999", rating: "8.8", genre: "Drama", status: "Plan to Watch" },
+            { title: "Downton Abbey", year: "2010", rating: "8.7", genre: "Drama, Romance", status: "Plan to Watch" },
+            { title: "Rome", year: "2005", rating: "8.7", genre: "Action, Drama, History", status: "Plan to Watch" },
+            { title: "Spartacus", year: "2010", rating: "8.5", genre: "Action, Adventure, Biography", status: "Plan to Watch" },
+            { title: "The Last Kingdom", year: "2015", rating: "8.4", genre: "Action, Drama, History", status: "Plan to Watch" },
+            { title: "Outlander", year: "2014", rating: "8.4", genre: "Adventure, Drama, Fantasy", status: "Plan to Watch" },
+            { title: "Sense8", year: "2015", rating: "8.2", genre: "Drama, Mystery, Sci-Fi", status: "Plan to Watch" },
+            { title: "Altered Carbon", year: "2018", rating: "7.9", genre: "Action, Drama, Sci-Fi", status: "Plan to Watch" },
+            { title: "The 100", year: "2014", rating: "7.6", genre: "Drama, Mystery, Sci-Fi", status: "Plan to Watch" },
+            { title: "The OA", year: "2016", rating: "7.8", genre: "Drama, Fantasy, Mystery", status: "Plan to Watch" },
+            { title: "Russian Doll", year: "2019", rating: "7.8", genre: "Adventure, Comedy, Drama", status: "Plan to Watch" },
+            { title: "Dead to Me", year: "2019", rating: "8.0", genre: "Comedy, Crime, Drama", status: "Plan to Watch" },
+            { title: "Orange Is the New Black", year: "2013", rating: "8.1", genre: "Comedy, Crime, Drama", status: "Plan to Watch" },
+            { title: "Glow", year: "2017", rating: "8.0", genre: "Comedy, Drama, Sport", status: "Plan to Watch" },
+            { title: "The Marvelous Mrs. Maisel", year: "2017", rating: "8.7", genre: "Comedy, Drama", status: "Plan to Watch" },
+            { title: "The Man in the High Castle", year: "2015", rating: "7.9", genre: "Drama, Sci-Fi, Thriller", status: "Plan to Watch" },
+            { title: "Good Omens", year: "2019", rating: "8.1", genre: "Comedy, Fantasy", status: "Plan to Watch" },
+            { title: "The Haunting of Hill House", year: "2018", rating: "8.6", genre: "Drama, Horror, Mystery", status: "Plan to Watch" },
+            { title: "The Haunting of Bly Manor", year: "2020", rating: "7.4", genre: "Drama, Horror, Mystery", status: "Plan to Watch" },
+            { title: "Midnight Mass", year: "2021", rating: "7.7", genre: "Drama, Horror, Mystery", status: "Plan to Watch" },
+            { title: "Archive 81", year: "2022", rating: "7.3", genre: "Drama, Horror, Mystery", status: "Plan to Watch" },
+            { title: "Lupin", year: "2021", rating: "7.5", genre: "Action, Crime, Drama", status: "Watched" },
+            { title: "Elite", year: "2018", rating: "7.5", genre: "Crime, Drama, Mystery", status: "Plan to Watch" },
+            { title: "Dark Desire", year: "2020", rating: "6.6", genre: "Drama, Mystery, Thriller", status: "Plan to Watch" },
+            { title: "You", year: "2018", rating: "7.7", genre: "Crime, Drama, Romance", status: "Watched" },
+            { title: "The Sinner", year: "2017", rating: "7.9", genre: "Crime, Drama, Mystery", status: "Plan to Watch" },
+            { title: "Minx", year: "2022", rating: "7.5", genre: "Comedy, Drama", status: "Plan to Watch" },
+            { title: "Peacemaker", year: "2022", rating: "8.3", genre: "Action, Adventure, Comedy", status: "Plan to Watch" },
+            { title: "The Penguin", year: "2024", rating: "8.8", genre: "Crime, Drama", status: "Plan to Watch" },
+            { title: "Fallout", year: "2024", rating: "8.5", genre: "Action, Adventure, Drama", status: "Plan to Watch" },
+            { title: "3 Body Problem", year: "2024", rating: "7.6", genre: "Drama, Mystery, Sci-Fi", status: "Plan to Watch" },
+            { title: "Shogun", year: "2024", rating: "8.8", genre: "Action, Drama, History", status: "Plan to Watch" },
+            { title: "Masters of the Air", year: "2024", rating: "7.9", genre: "Drama, Thriller, War", status: "Plan to Watch" }
+        ];
 
         async function fetchIMDb(title) {
             try {
@@ -657,7 +1024,16 @@ text-anchor='middle
                     poster: data.Poster !== "N/A" ? data.Poster : null,
                     imdbID: data.imdbID || "",
                     status: "Watched",
-                    addedDate: new Date().toISOString()
+                    addedDate: new Date().toISOString(),
+                    favorite: false,
+                    priority: 3,
+                    currentlyWatching: false,
+                    watchDate: null,
+                    personalRating: null,
+                    notes: '',
+                    episodesWatched: 0,
+                    totalEpisodes: parseInt(data.totalSeasons) * 10 || 0,
+                    collections: []
                 };
             } catch (e) {
                 console.error('Fetch error:', e);
@@ -665,25 +1041,97 @@ text-anchor='middle
             }
         }
 
+        function migrateOldData(item) {
+            return {
+                ...item,
+                id: item.id || Date.now() + Math.random(),
+                addedDate: item.addedDate || new Date().toISOString(),
+                favorite: item.favorite || false,
+                priority: item.priority || 3,
+                currentlyWatching: item.currentlyWatching || false,
+                watchDate: item.watchDate || null,
+                personalRating: item.personalRating || null,
+                notes: item.notes || '',
+                episodesWatched: item.episodesWatched || 0,
+                totalEpisodes: item.totalEpisodes || 0,
+                collections: item.collections || []
+            };
+        }
+
         function getSortedDB() {
-            let filtered = currentFilter === 'all' ? db : db.filter(s => s.status === currentFilter);
+            let filtered = currentFilter === 'all' ? [...db] : db.filter(s => s.status === currentFilter);
+
+            if (activeFilters.search) {
+                filtered = filtered.filter(s => s.title.toLowerCase().includes(activeFilters.search.toLowerCase()));
+            }
+            if (activeFilters.genre) {
+                filtered = filtered.filter(s => s.genre.toLowerCase().includes(activeFilters.genre.toLowerCase()));
+            }
+            if (activeFilters.favorites) {
+                filtered = filtered.filter(s => s.favorite);
+            }
+            if (activeFilters.highRated) {
+                filtered = filtered.filter(s => parseFloat(s.rating) >= 8);
+            }
+
+            const ratingMin = parseFloat(document.getElementById('ratingMin')?.value || 0);
+            filtered = filtered.filter(s => parseFloat(s.rating) >= ratingMin);
+
+            const yearMin = parseInt(document.getElementById('yearMin')?.value || 1990);
+            filtered = filtered.filter(s => {
+                const year = parseInt(s.year);
+                return year >= yearMin;
+            });
+
             const sort = document.getElementById('sortInput')?.value || 'date-desc';
             filtered.sort((a, b) => {
                 if (sort === 'rating-desc') return (parseFloat(b.rating) || 0) - (parseFloat(a.rating) || 0);
                 if (sort === 'title-asc') return a.title.localeCompare(b.title);
+                if (sort === 'favorites') return (b.favorite ? 1 : 0) - (a.favorite ? 1 : 0);
                 return new Date(b.addedDate) - new Date(a.addedDate);
             });
+
             return filtered;
         }
 
         function updateStats() {
             document.getElementById('totalCount').textContent = db.length;
             document.getElementById('watchedCount').textContent = db.filter(s => s.status === 'Watched').length;
-            document.getElementById('planCount').textContent = db.filter(s => s.status === 'Plan to Watch').length;
+            document.getElementById('favoritesCount').textContent = db.filter(s => s.favorite).length;
+            document.getElementById('watchingCount').textContent = db.filter(s => s.status === 'Currently Watching').length;
+
+            const avgRating = db.length ? (db.reduce((acc, s) => acc + (parseFloat(s.rating) || 0), 0) / db.length).toFixed(1) : '0.0';
+            const totalHours = Math.floor(db.filter(s => s.status === 'Watched').length * 8);
+
+            document.getElementById('statsInfo').innerHTML = `
+                <div style="display: flex; flex-direction: column; gap: 1rem; padding: 1rem;">
+                    <div><strong>Average Rating:</strong> ${avgRating} ⭐</div>
+                    <div><strong>Total Hours:</strong> ~${totalHours} hrs</div>
+                    <div><strong>Genres:</strong> ${getUniqueGenres().length}</div>
+                </div>
+            `;
         }
 
         function getStatusClass(status) {
-            return status === 'Watched' ? 'badge-watched' : status === 'Rewatch' ? 'badge-rewatch' : 'badge-plan';
+            if (status === 'Watched') return 'badge-watched';
+            if (status === 'Rewatch') return 'badge-rewatch';
+            if (status === 'Currently Watching') return 'badge-watching';
+            return 'badge-plan';
+        }
+
+        function generatePosterSVG(title, index) {
+            const gradients = [
+                ['#667eea', '#764ba2'], ['#f093fb', '#f5576c'], ['#4facfe', '#00f2fe'],
+                ['#43e97b', '#38f9d7'], ['#fa709a', '#fee140'], ['#30cfd0', '#330867'],
+                ['#a8edea', '#fed6e3'], ['#ff9a9e', '#fecfef'], ['#ffecd2', '#fcb69f'],
+                ['#ff6e7f', '#bfe9ff'], ['#e0c3fc', '#8ec5fc'], ['#f8b500', '#fceabb'],
+                ['#667eea', '#764ba2'], ['#5ee7df', '#b490ca'], ['#d299c2', '#fef9d7'],
+                ['#89f7fe', '#66a6ff'], ['#fddb92', '#d1fdff'], ['#9890e3', '#b1f4cf']
+            ];
+            const colors = gradients[index % gradients.length];
+            const shortTitle = title.length > 20 ? title.substring(0, 18) + '...' : title;
+
+            return `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300'%3E%3Cdefs%3E%3ClinearGradient id='g${index}' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:${colors[0]};stop-opacity:1'/%3E%3Cstop offset='100%25' style='stop-color:${colors[1]};stop-opacity:1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g${index})' width='200' height='300'/%3E%3Ctext x='50%25' y='50%25' font-family='Arial,sans-serif' font-size='18' font-weight='bold' fill='white' text-anchor='middle' dominant-baseline='middle'%3E${encodeURIComponent(shortTitle)}%3C/text%3E%3C/svg%3E`;
         }
 
         function render() {
@@ -691,16 +1139,20 @@ text-anchor='middle
             if (sorted.length === 0) {
                 document.getElementById('emptyState').style.display = 'block';
                 document.getElementById('seriesGrid').innerHTML = '';
-                document.getElementById('seriesTable').innerHTML = '';
+                updateCharts();
                 return;
             }
             document.getElementById('emptyState').style.display = 'none';
 
-            document.getElementById('seriesGrid').innerHTML = sorted.map(s => `
+            document.getElementById('seriesGrid').innerHTML = sorted.map((s, idx) => `
                 <div class="series-card">
-                    <div class="poster-container">
-                        ${s.poster ? `<img src="${s.poster}" alt="${s.title}" class="poster" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 300%22%3E%3Crect fill=%22%23334155%22 width=%22200%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-size=%2218%22 fill=%22%2394a3b8%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22%3ENo Poster%3C/text%3E%3C/svg%3E'">` : '<div style="width:100%; height:100%; background:#334155; display:flex; align-items:center; justify-content:center;">No Poster</div>'}
-                        <span class="status-badge ${getStatusClass(s.status)}">${s.status.substring(0, 3)}</span>
+                    <div class="poster-container" onclick="openDetailsModal('${s.id}')">
+                        <img src="${s.poster || generatePosterSVG(s.title, idx)}" alt="${s.title}" class="poster">
+                        <div class="favorite-badge ${s.favorite ? 'active' : ''}" onclick="event.stopPropagation(); toggleFavorite('${s.id}')">
+                            ${s.favorite ? '⭐' : '☆'}
+                        </div>
+                        <span class="status-badge ${getStatusClass(s.status)}">${s.status === 'Currently Watching' ? 'WATCHING' : s.status.substring(0, 3)}</span>
+                        ${s.status === 'Plan to Watch' && s.priority ? `<span class="priority-badge">${'⭐'.repeat(s.priority)}</span>` : ''}
                     </div>
                     <div class="card-content">
                         <div class="card-title">${s.title}</div>
@@ -709,6 +1161,7 @@ text-anchor='middle
                             <span class="card-rating">⭐ ${s.rating}</span>
                         </div>
                         <div class="card-genre">${s.genre}</div>
+                        ${s.personalRating ? `<div style="color: var(--favorite); font-size: 0.85rem; margin-bottom: 0.5rem;">My Rating: ${s.personalRating}/10</div>` : ''}
                         <div class="card-actions">
                             <button class="card-btn" onclick="changeStatus('${s.id}')">Change</button>
                             <button class="card-btn delete" onclick="removeSeries('${s.id}')">Delete</button>
@@ -717,41 +1170,33 @@ text-anchor='middle
                 </div>
             `).join('');
 
-            document.getElementById('seriesTable').innerHTML = sorted.map(s => `
-                <tr>
-                    <td>${s.poster ? `<img src="${s.poster}" class="poster-small">` : 'N/A'}</td>
-                    <td><strong>${s.title}</strong></td>
-                    <td>${s.year}</td>
-                    <td>${s.rating}</td>
-                    <td>${s.genre}</td>
-                    <td><span class="status-badge ${getStatusClass(s.status)}">${s.status}</span></td>
-                    <td><button class="card-btn" onclick="changeStatus('${s.id}')" style="width: 70px; margin-right: 0.5rem;">Change</button><button class="card-btn delete" onclick="removeSeries('${s.id}')" style="width: 70px;">Delete</button></td>
-                </tr>
-            `).join('');
-
             updateStats();
+            updateCharts();
+            updateGenreFilter();
         }
 
         function filterByStatus(status) {
             currentFilter = status;
-            document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.filter-section .chip').forEach(c => c.classList.remove('active'));
             event.target.classList.add('active');
             render();
         }
 
-        function switchView(view) {
-            document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
-            event.target.classList.add('active');
-            document.querySelector('.grid-view').classList.toggle('active', view === 'grid');
-            document.querySelector('.table-view').classList.toggle('active', view === 'table');
+        function toggleFavorite(id) {
+            const item = db.find(s => s.id == id);
+            if (!item) return;
+            item.favorite = !item.favorite;
+            save();
+            render();
+            showToast(item.favorite ? '⭐ Added to favorites!' : 'Removed from favorites');
         }
 
         function changeStatus(id) {
             const item = db.find(s => s.id == id);
             if (!item) return;
-            const statuses = ['Watched', 'Rewatch', 'Plan to Watch'];
+            const statuses = ['Watched', 'Currently Watching', 'Rewatch', 'Plan to Watch'];
             const current = statuses.indexOf(item.status);
-            item.status = statuses[(current + 1) % 3];
+            item.status = statuses[(current + 1) % 4];
             save();
             render();
         }
@@ -761,51 +1206,474 @@ text-anchor='middle
                 db = db.filter(s => s.id != id);
                 save();
                 render();
+                showToast('Series deleted');
             }
         }
 
         async function addSeries() {
             const title = document.getElementById('titleInput').value.trim();
-            if (!title) return alert('Enter series name');
+            if (!title) return showToast('❌ Enter series name', true);
             const status = document.getElementById('statusInput').value;
+
+            showToast('⏳ Searching...');
             const item = await fetchIMDb(title);
-            if (!item) return alert('Series not found');
+            if (!item) return showToast('❌ Series not found', true);
+
             item.status = status;
+            item.currentlyWatching = status === 'Currently Watching';
             db.unshift(item);
             save();
             render();
             document.getElementById('titleInput').value = '';
+            showToast('✅ Series added!');
+        }
+
+        function openDetailsModal(id) {
+            const item = db.find(s => s.id == id);
+            if (!item) return;
+            currentEditingId = id;
+
+            const modal = document.getElementById('detailsModal');
+            const modalBody = document.getElementById('modalBody');
+            document.getElementById('modalTitle').textContent = item.title;
+
+            modalBody.innerHTML = `
+                ${item.poster ? `<img src="${item.poster}" class="modal-poster">` : ''}
+                <div><strong>Year:</strong> ${item.year}</div>
+                <div><strong>IMDb Rating:</strong> ${item.rating} ⭐</div>
+                <div><strong>Genre:</strong> ${item.genre}</div>
+                <div><strong>Status:</strong> ${item.status}</div>
+                
+                <div class="form-group">
+                    <label>Personal Rating (0-10)</label>
+                    <div class="star-rating" id="starRating"></div>
+                </div>
+
+                <div class="form-group">
+                    <label>Watch Date</label>
+                    <input type="date" id="watchDate" value="${item.watchDate || ''}" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label>Episodes Watched</label>
+                    <input type="number" id="episodesWatched" value="${item.episodesWatched || 0}" min="0">
+                </div>
+
+                <div class="form-group">
+                    <label>Total Episodes</label>
+                    <input type="number" id="totalEpisodes" value="${item.totalEpisodes || 0}" min="0">
+                </div>
+
+                <div class="form-group">
+                    <label>Priority (for Plan to Watch)</label>
+                    <select id="priority">
+                        <option value="1" ${item.priority === 1 ? 'selected' : ''}>⭐ Low</option>
+                        <option value="2" ${item.priority === 2 ? 'selected' : ''}>⭐⭐ Medium-Low</option>
+                        <option value="3" ${item.priority === 3 ? 'selected' : ''}>⭐⭐⭐ Medium</option>
+                        <option value="4" ${item.priority === 4 ? 'selected' : ''}>⭐⭐⭐⭐ High</option>
+                        <option value="5" ${item.priority === 5 ? 'selected' : ''}>⭐⭐⭐⭐⭐ Critical</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Personal Notes</label>
+                    <textarea id="notes" rows="4" placeholder="Your thoughts about this series...">${item.notes || ''}</textarea>
+                </div>
+
+                <button class="btn" onclick="saveDetails()">💾 Save Changes</button>
+            `;
+
+            renderStarRating(item.personalRating || 0);
+            modal.classList.add('active');
+        }
+
+        function renderStarRating(rating) {
+            const container = document.getElementById('starRating');
+            container.innerHTML = '';
+            for (let i = 1; i <= 10; i++) {
+                const star = document.createElement('span');
+                star.className = `star ${i <= rating ? 'active' : ''}`;
+                star.textContent = '⭐';
+                star.onclick = () => {
+                    document.querySelectorAll('.star').forEach((s, idx) => {
+                        s.classList.toggle('active', idx < i);
+                    });
+                };
+                container.appendChild(star);
+            }
+        }
+
+        function saveDetails() {
+            const item = db.find(s => s.id == currentEditingId);
+            if (!item) return;
+
+            item.personalRating = document.querySelectorAll('.star.active').length;
+            item.watchDate = document.getElementById('watchDate').value;
+            item.episodesWatched = parseInt(document.getElementById('episodesWatched').value) || 0;
+            item.totalEpisodes = parseInt(document.getElementById('totalEpisodes').value) || 0;
+            item.priority = parseInt(document.getElementById('priority').value);
+            item.notes = document.getElementById('notes').value;
+
+            save();
+            render();
+            closeModal();
+            showToast('✅ Details saved!');
+        }
+
+        function closeModal() {
+            document.getElementById('detailsModal').classList.remove('active');
+            currentEditingId = null;
+        }
+
+        function applyFilters() {
+            activeFilters.search = document.getElementById('searchInput').value;
+            activeFilters.genre = document.getElementById('genreFilter').value;
+            render();
+        }
+
+        function toggleFilter(type) {
+            event.target.classList.toggle('active');
+            activeFilters[type === 'favorites' ? 'favorites' : 'highRated'] = event.target.classList.contains('active');
+            render();
+        }
+
+        function clearFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('genreFilter').value = '';
+            document.getElementById('ratingMin').value = 0;
+            document.getElementById('yearMin').value = 1990;
+            activeFilters = { search: '', genre: '', favorites: false, highRated: false };
+            document.querySelectorAll('.search-filter-section .chip.active').forEach(c => c.classList.remove('active'));
+            updateRangeDisplay();
+            render();
+        }
+
+        function updateRangeDisplay() {
+            const ratingMin = parseFloat(document.getElementById('ratingMin')?.value || 0);
+            document.getElementById('ratingRange').textContent = `${ratingMin.toFixed(1)} - 10.0`;
+
+            const yearMin = parseInt(document.getElementById('yearMin')?.value || 1990);
+            document.getElementById('yearRange').textContent = `${yearMin} - 2024`;
+        }
+
+        function getUniqueGenres() {
+            const genres = new Set();
+            db.forEach(s => {
+                if (s.genre && s.genre !== 'N/A') {
+                    s.genre.split(',').forEach(g => genres.add(g.trim()));
+                }
+            });
+            return Array.from(genres).sort();
+        }
+
+        function updateGenreFilter() {
+            const select = document.getElementById('genreFilter');
+            const currentValue = select.value;
+            const genres = getUniqueGenres();
+
+            select.innerHTML = '<option value="">All Genres</option>' +
+                genres.map(g => `<option value="${g}" ${g === currentValue ? 'selected' : ''}>${g}</option>`).join('');
+        }
+
+        function updateCharts() {
+            updateStatusChart();
+            updateGenreChart();
+            updateRatingChart();
+        }
+
+        function updateStatusChart() {
+            const ctx = document.getElementById('statusChart');
+            if (!ctx) return;
+
+            const statusCounts = {
+                'Watched': db.filter(s => s.status === 'Watched').length,
+                'Currently Watching': db.filter(s => s.status === 'Currently Watching').length,
+                'Rewatch': db.filter(s => s.status === 'Rewatch').length,
+                'Plan to Watch': db.filter(s => s.status === 'Plan to Watch').length
+            };
+
+            if (charts.status) charts.status.destroy();
+
+            charts.status = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(statusCounts),
+                    datasets: [{
+                        data: Object.values(statusCounts),
+                        backgroundColor: ['#10b981', '#3b82f6', '#f59e0b', '#ef4444']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: { display: true, labels: { color: getComputedStyle(document.body).getPropertyValue('--text-primary') } }
+                    }
+                }
+            });
+        }
+
+        function updateGenreChart() {
+            const ctx = document.getElementById('genreChart');
+            if (!ctx) return;
+
+            const genreCounts = {};
+            db.forEach(s => {
+                if (s.genre && s.genre !== 'N/A') {
+                    s.genre.split(',').forEach(g => {
+                        const genre = g.trim();
+                        genreCounts[genre] = (genreCounts[genre] || 0) + 1;
+                    });
+                }
+            });
+
+            const sortedGenres = Object.entries(genreCounts).sort((a, b) => b[1] - a[1]).slice(0, 8);
+
+            if (charts.genre) charts.genre.destroy();
+
+            charts.genre = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: sortedGenres.map(g => g[0]),
+                    datasets: [{
+                        data: sortedGenres.map(g => g[1]),
+                        backgroundColor: ['#3b82f6', '#8b5cf6', '#10b981', '#f59e0b', '#ef4444', '#ec4899', '#14b8a6', '#f97316']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: { display: true, position: 'bottom', labels: { color: getComputedStyle(document.body).getPropertyValue('--text-primary'), boxWidth: 12, padding: 8 } }
+                    }
+                }
+            });
+        }
+
+        function updateRatingChart() {
+            const ctx = document.getElementById('ratingChart');
+            if (!ctx) return;
+
+            const ratingBuckets = { '0-2': 0, '2-4': 0, '4-6': 0, '6-8': 0, '8-10': 0 };
+            db.forEach(s => {
+                const rating = parseFloat(s.rating);
+                if (!isNaN(rating)) {
+                    if (rating < 2) ratingBuckets['0-2']++;
+                    else if (rating < 4) ratingBuckets['2-4']++;
+                    else if (rating < 6) ratingBuckets['4-6']++;
+                    else if (rating < 8) ratingBuckets['6-8']++;
+                    else ratingBuckets['8-10']++;
+                }
+            });
+
+            if (charts.rating) charts.rating.destroy();
+
+            charts.rating = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(ratingBuckets),
+                    datasets: [{
+                        label: 'Number of Series',
+                        data: Object.values(ratingBuckets),
+                        backgroundColor: '#3b82f6'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: { ticks: { color: getComputedStyle(document.body).getPropertyValue('--text-primary') }, grid: { color: 'rgba(100, 116, 139, 0.2)' } },
+                        x: { ticks: { color: getComputedStyle(document.body).getPropertyValue('--text-primary') }, grid: { display: false } }
+                    }
+                }
+            });
+        }
+
+        function toggleDashboard() {
+            const content = document.getElementById('dashboardContent');
+            content.style.display = content.style.display === 'none' ? 'grid' : 'none';
+        }
+
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme');
+            const newTheme = current === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem(THEME_KEY, newTheme);
+            document.querySelector('.theme-toggle').textContent = newTheme === 'light' ? '☀️' : '🌙';
+
+            setTimeout(() => updateCharts(), 100);
+        }
+
+        function exportJSON() {
+            const dataStr = JSON.stringify(db, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `cinetrack_backup_${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            showToast('✅ Exported to JSON');
+        }
+
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    if (Array.isArray(imported)) {
+                        db = imported.map(migrateOldData);
+                        save();
+                        render();
+                        showToast('✅ Data imported!');
+                    } else {
+                        showToast('❌ Invalid file format', true);
+                    }
+                } catch (err) {
+                    showToast('❌ Import failed', true);
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function showToast(message, isError = false) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.style.borderColor = isError ? 'var(--danger)' : 'var(--accent-primary)';
+            toast.classList.add('active');
+            setTimeout(() => toast.classList.remove('active'), 3000);
+        }
+
+        async function fetchAllPosters() {
+            const btn = document.getElementById('fetchPostersBtn');
+            const seriesWithoutPosters = db.filter(s => !s.poster || s.poster.startsWith('data:image/svg'));
+
+            if (seriesWithoutPosters.length === 0) {
+                showToast('✅ All posters already loaded!');
+                return;
+            }
+
+            if (!confirm(`This will fetch real posters for ${seriesWithoutPosters.length} series. This may take a few minutes. Continue?`)) {
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = '⏳ Fetching...';
+            let fetched = 0;
+            let failed = 0;
+
+            showToast(`📥 Fetching posters for ${seriesWithoutPosters.length} series...`);
+
+            for (const series of seriesWithoutPosters) {
+                try {
+                    const data = await fetchIMDb(series.title);
+                    if (data && data.poster) {
+                        series.poster = data.poster;
+                        series.imdbID = data.imdbID;
+                        fetched++;
+                    } else {
+                        failed++;
+                    }
+                } catch (e) {
+                    failed++;
+                }
+
+                // Update progress
+                const progress = fetched + failed;
+                btn.textContent = `⏳ ${progress}/${seriesWithoutPosters.length}`;
+
+                // Save every 10 series
+                if (progress % 10 === 0) {
+                    save();
+                    render();
+                }
+
+                // Rate limiting - wait between requests
+                await new Promise(r => setTimeout(r, 300));
+            }
+
+            save();
+            render();
+            btn.disabled = false;
+            btn.textContent = '🖼️ Fetch Posters';
+            showToast(`✅ Loaded ${fetched} posters! ${failed > 0 ? `(${failed} failed)` : ''}`);
         }
 
         function save() {
             localStorage.setItem(STORAGE_KEY, JSON.stringify(db));
         }
 
-        async function init() {
-            const stored = localStorage.getItem(STORAGE_KEY);
-            if (stored) {
-                db = JSON.parse(stored);
-                render();
-            } else {
-                console.log('Loading offline series database...');
-                for (const item of OFFLINE_DB) {
-                    db.push({
-                        id: Date.now() + Math.random(),
-                        title: item.title,
-                        year: item.year,
-                        rating: item.rating,
-                        genre: item.genre,
-                        poster: item.poster,
-                        imdbID: "",
-                        status: item.status,
-                        addedDate: new Date().toISOString()
-                    });
-                    await new Promise(r => setTimeout(r, 50));
-                }
-                save();
-                render();
+        function resetDatabase() {
+            if (confirm('⚠️ This will clear your current data and load 200+ fresh series. Continue?')) {
+                localStorage.removeItem(STORAGE_KEY);
+                location.reload();
             }
         }
+
+        async function init() {
+            const savedTheme = localStorage.getItem(THEME_KEY);
+            if (savedTheme) {
+                document.documentElement.setAttribute('data-theme', savedTheme);
+                document.querySelector('.theme-toggle').textContent = savedTheme === 'light' ? '☀️' : '🌙';
+            }
+
+            const stored = localStorage.getItem(STORAGE_KEY);
+            if (stored) {
+                db = JSON.parse(stored).map(migrateOldData);
+                render();
+            } else {
+                // Load embedded database directly
+                console.log('Loading 200+ series from embedded database...');
+                db = OFFLINE_DB.map(item => ({
+                    id: Date.now() + Math.random(),
+                    title: item.title,
+                    year: item.year,
+                    rating: item.rating,
+                    genre: item.genre,
+                    poster: null, // Will show placeholder
+                    imdbID: "",
+                    status: item.status,
+                    addedDate: new Date().toISOString(),
+                    favorite: false,
+                    priority: 3,
+                    currentlyWatching: item.status === 'Currently Watching',
+                    watchDate: null,
+                    personalRating: null,
+                    notes: '',
+                    episodesWatched: 0,
+                    totalEpisodes: 0,
+                    collections: []
+                }));
+                save();
+                render();
+                console.log(`✅ Loaded ${db.length} series!`);
+            }
+
+
+            document.addEventListener('keydown', (e) => {
+                if (e.ctrlKey && e.key === 'k') {
+                    e.preventDefault();
+                    document.getElementById('searchInput').focus();
+                }
+                if (e.ctrlKey && e.key === 'd') {
+                    e.preventDefault();
+                    toggleTheme();
+                }
+                if (e.ctrlKey && e.key === 'e') {
+                    e.preventDefault();
+                    exportJSON();
+                }
+            });
+        }
+
+        window.onclick = (e) => {
+            if (e.target.id === 'detailsModal') closeModal();
+        };
 
         init();
     </script>
